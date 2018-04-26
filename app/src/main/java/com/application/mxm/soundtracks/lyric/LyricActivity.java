@@ -5,14 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.application.mxm.soundtracks.R;
 import com.application.mxm.soundtracks.data.model.Lyric;
-import com.application.mxm.soundtracks.ui.EmptyView;
 import com.application.mxm.soundtracks.utils.Utils;
 
 import javax.inject.Inject;
@@ -30,8 +27,8 @@ import static com.application.mxm.soundtracks.tracklist.TrackListActivity.LYRICS
 public class LyricActivity extends DaggerAppCompatActivity implements LyricContract.LyricsView {
     @BindView(R.id.lyricsTextViewId)
     TextView lyricsTextView;
-    ProgressBar progressBar;
-    EmptyView emptyView;
+//    ProgressBar progressBar;
+//    EmptyView emptyView;
 
     @Inject
     LyricPresenter presenter;
@@ -93,16 +90,16 @@ public class LyricActivity extends DaggerAppCompatActivity implements LyricContr
 
     @Override
     public void onRenderData(Lyric item) {
-        progressBar.setVisibility(View.GONE);
-        emptyView.setVisibility(View.GONE);
+//        progressBar.setVisibility(View.GONE);
+//        emptyView.setVisibility(View.GONE);
         lyricsTextView.setText(item.getLyricsBody());
     }
 
 
     @Override
     public void onError(String error) {
-        progressBar.setVisibility(View.GONE);
-        emptyView.setVisibility(View.VISIBLE);
+//        progressBar.setVisibility(View.GONE);
+//        emptyView.setVisibility(View.VISIBLE);
         Snackbar.make(findViewById(R.id.activity_main), R.string.retrieve_error,
                 Snackbar.LENGTH_SHORT).show();
     }

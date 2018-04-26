@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.SparseArray;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -21,6 +22,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import dagger.android.support.DaggerAppCompatActivity;
 
 import static com.application.mxm.soundtracks.MainActivity.TRACK_PARAMS_KEY;
@@ -28,31 +32,34 @@ import static com.application.mxm.soundtracks.MainActivity.TRACK_PARAMS_KEY;
 /**
  * stargazer activity
  */
-public class TrackListActivity extends DaggerAppCompatActivity implements TrackContract.TrackView, TrackListAdapter.OnTrackItemClickListener {
+public class TrackListActivity extends DaggerAppCompatActivity implements TrackContract.TrackView, TrackListAdapter.OnTrackItemClickListener, TrackListAdapter.OnTrackLoadMoreClickListener {
     public static final String LYRICS_PARAMS_KEY = "LYRICS_PARAMS_KEY";
+    @BindView(R.id.stargazerRecyclerViewId)
     RecyclerView recyclerView;
+    @BindView(R.id.stargazerProgressbarId)
     ProgressBar progressBar;
+    @BindView(R.id.emptyViewId)
     EmptyView emptyView;
 
     @Inject
     TrackPresenter presenter;
 
+    private Unbinder unbinder;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_track_list);
-
-        bindView();
+        unbinder = ButterKnife.bind(this);
         onInitView();
     }
 
-    /**
-     * TODO move to butterknife
-     */
-    private void bindView() {
-        recyclerView =  findViewById(R.id.stargazerRecyclerViewId);
-        progressBar = findViewById(R.id.stargazerProgressbarId);
-        emptyView = findViewById(R.id.emptyViewId);
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (unbinder != null)
+            unbinder.unbind();
     }
 
     /**
@@ -131,7 +138,10 @@ public class TrackListActivity extends DaggerAppCompatActivity implements TrackC
         recyclerView.setVisibility(View.VISIBLE);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(new TrackListAdapter(items, this));
+        if (recyclerView.getAdapter() == null)
+            recyclerView.setAdapter(new TrackListAdapter(items, this, this));
+        else
+            ((TrackListAdapter) recyclerView.getAdapter()).addItems(items);
     }
 
     @Override
@@ -157,4 +167,14 @@ public class TrackListActivity extends DaggerAppCompatActivity implements TrackC
         return intent;
     }
 
+    @Override
+    public void onTrackLoadMoreClick(View view) {
+        //increment page
+        SparseArray<String> params = presenter.getParams();
+        int nextPage = Integer.parseInt(params.get(0)) + 1;
+        params.setValueAt(0, Integer.toString(nextPage));
+
+        //retrieve new items
+        presenter.retrieveItems(params);
+    }
 }
