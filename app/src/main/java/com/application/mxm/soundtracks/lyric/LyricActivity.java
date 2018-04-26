@@ -1,5 +1,7 @@
 package com.application.mxm.soundtracks.lyric;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
@@ -114,4 +116,10 @@ public class LyricActivity extends DaggerAppCompatActivity implements LyricContr
         Toast.makeText(this, "hide loader", Toast.LENGTH_SHORT).show();
     }
 
+    public static Intent buildIntent(Context context, Integer trackId) {
+        Bundle bundle = Utils.buildLyricsParams(Integer.toString(trackId));
+        Intent intent = new Intent(context, LyricActivity.class);
+        intent.putExtra(LYRICS_PARAMS_KEY, bundle);
+        return intent;
+    }
 }

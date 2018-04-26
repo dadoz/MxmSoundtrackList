@@ -12,6 +12,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.application.mxm.soundtracks.R;
+import com.application.mxm.soundtracks.data.model.Track;
 import com.application.mxm.soundtracks.lyric.LyricActivity;
 import com.application.mxm.soundtracks.ui.EmptyView;
 import com.application.mxm.soundtracks.utils.Utils;
@@ -93,7 +94,7 @@ public class TrackListActivity extends DaggerAppCompatActivity implements TrackC
     }
 
     @Override
-    public void onRenderData(List<?> items) {
+    public void onRenderData(List<Track> items) {
         progressBar.setVisibility(View.GONE);
         emptyView.setVisibility(View.GONE);
         initRecyclerView(items);
@@ -123,7 +124,7 @@ public class TrackListActivity extends DaggerAppCompatActivity implements TrackC
      * init recycler view binding data by adapter
      * @param items
      */
-    private void initRecyclerView(List<?> items) {
+    private void initRecyclerView(List<Track> items) {
         if (items.size() == 0) {
             return;
         }
@@ -134,10 +135,8 @@ public class TrackListActivity extends DaggerAppCompatActivity implements TrackC
     }
 
     @Override
-    public void onTrackItemClick(View view, int position) {
-        Bundle bundle = Utils.buildLyricsParams("bllalala");
-        Intent intent = new Intent(this, LyricActivity.class);
-        intent.putExtra(LYRICS_PARAMS_KEY, bundle);
+    public void onTrackItemClick(View view, Track item) {
+        Intent intent = LyricActivity.buildIntent(this, item.getTrackId());
         startActivity(intent);
 
     }
