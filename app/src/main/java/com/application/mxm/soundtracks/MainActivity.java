@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import com.application.mxm.soundtracks.lyric.LyricActivity;
+import com.application.mxm.soundtracks.tracklist.TrackListActivity;
 import com.application.mxm.soundtracks.ui.RepoOwnerDataView;
 
 
@@ -42,6 +42,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         SoundtrackApplication application = ((SoundtrackApplication) getApplication());
         application.setOwner(repoOwnerDataView.getOwner());
         application.setRepo(repoOwnerDataView.getRepo());
-        startActivity(new Intent(this, LyricActivity.class));
+        startActivity(new Intent(this, TrackListActivity.class));
     }
 }

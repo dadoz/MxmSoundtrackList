@@ -11,7 +11,6 @@ import android.widget.Toast;
 
 import com.application.mxm.soundtracks.R;
 import com.application.mxm.soundtracks.SoundtrackApplication;
-import com.application.mxm.soundtracks.adapter.TrackListAdapter;
 import com.application.mxm.soundtracks.ui.EmptyView;
 import com.application.mxm.soundtracks.utils.Utils;
 
