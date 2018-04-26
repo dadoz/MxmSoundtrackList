@@ -2,7 +2,7 @@ package com.application.mxm.soundtracks.data.remote.services;
 
 
 import com.application.mxm.soundtracks.BuildConfig;
-import com.application.mxm.soundtracks.data.model.Lyrics;
+import com.application.mxm.soundtracks.data.model.Lyric;
 import com.application.mxm.soundtracks.data.model.Track;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -25,7 +25,7 @@ public class RetrofitServiceRx {
      * get service
      * @return
      */
-    public TracksService getStagazerRetrofit() {
+    public TracksService getTrackRetrofit() {
         try {
             HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
             interceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
@@ -57,10 +57,10 @@ public class RetrofitServiceRx {
     /**
      * track json to a list of track item
      */
-    public static class LyricsJsonDeserializer implements JsonDeserializer<Lyrics> {
+    public static class LyricsJsonDeserializer implements JsonDeserializer<Lyric> {
         @Override
-        public Lyrics deserialize(JsonElement json, Type typeOfT,
-                                  JsonDeserializationContext context) throws JsonParseException {
+        public Lyric deserialize(JsonElement json, Type typeOfT,
+                                 JsonDeserializationContext context) throws JsonParseException {
             return new Gson().fromJson(json.getAsJsonObject().get("message").getAsJsonObject().get("body")
                     .getAsJsonObject().get("lyrics").getAsJsonObject(), typeOfT);
         }

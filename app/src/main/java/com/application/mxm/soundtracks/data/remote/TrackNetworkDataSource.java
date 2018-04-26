@@ -3,7 +3,7 @@ package com.application.mxm.soundtracks.data.remote;
 import android.content.Context;
 
 import com.application.mxm.soundtracks.data.TrackDataSource;
-import com.application.mxm.soundtracks.data.model.Lyrics;
+import com.application.mxm.soundtracks.data.model.Lyric;
 import com.application.mxm.soundtracks.data.model.Track;
 import com.application.mxm.soundtracks.data.remote.services.RetrofitServiceRx;
 import com.google.gson.GsonBuilder;
@@ -40,7 +40,7 @@ public class TrackNetworkDataSource implements TrackDataSource {
 
             List<Track> res = new GsonBuilder()
                     .registerTypeAdapter(new TypeToken<List<Track>>() {}.getType(), new RetrofitServiceRx.TrackJsonDeserializer())
-                    .registerTypeAdapter(Lyrics.class, new RetrofitServiceRx.LyricsJsonDeserializer())
+                    .registerTypeAdapter(Lyric.class, new RetrofitServiceRx.LyricsJsonDeserializer())
                     .create()
                     .fromJson(json, new TypeToken<List<Track>>() {}.getType());
             return Observable.just(res);
@@ -52,7 +52,7 @@ public class TrackNetworkDataSource implements TrackDataSource {
     }
 
 /*    public Observable<List<Track>> getStargazer(String owner, String repo) {
-        return new RetrofitServiceRx().getStagazerRetrofit()
+        return new RetrofitServiceRx().getTrackRetrofit()
                 .getStargazers(owner, repo);
     }
 */
