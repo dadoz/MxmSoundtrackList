@@ -4,11 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.application.mxm.soundtracks.R;
@@ -18,6 +17,9 @@ import com.application.mxm.soundtracks.utils.Utils;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import dagger.android.support.DaggerAppCompatActivity;
 
 import static com.application.mxm.soundtracks.tracklist.TrackListActivity.LYRICS_PARAMS_KEY;
@@ -26,29 +28,29 @@ import static com.application.mxm.soundtracks.tracklist.TrackListActivity.LYRICS
  * stargazer activity
  */
 public class LyricActivity extends DaggerAppCompatActivity implements LyricContract.LyricsView {
-    RecyclerView recyclerView;
+    @BindView(R.id.lyricsTextViewId)
+    TextView lyricsTextView;
     ProgressBar progressBar;
     EmptyView emptyView;
 
     @Inject
     LyricPresenter presenter;
 
+    private Unbinder unbinder;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_track_list);
-
-        bindView();
+        setContentView(R.layout.activity_lyrics);
+        unbinder = ButterKnife.bind(this);
         onInitView();
     }
 
-    /**
-     * TODO move to butterknife
-     */
-    private void bindView() {
-        recyclerView =  findViewById(R.id.stargazerRecyclerViewId);
-        progressBar = findViewById(R.id.stargazerProgressbarId);
-        emptyView = findViewById(R.id.emptyViewId);
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (unbinder != null)
+            unbinder.unbind();
     }
 
     /**
@@ -93,13 +95,12 @@ public class LyricActivity extends DaggerAppCompatActivity implements LyricContr
     public void onRenderData(Lyric item) {
         progressBar.setVisibility(View.GONE);
         emptyView.setVisibility(View.GONE);
-        Log.e(getClass().getName(), item.getLyricsBody());
+        lyricsTextView.setText(item.getLyricsBody());
     }
 
 
     @Override
     public void onError(String error) {
-        recyclerView.setVisibility(View.GONE);
         progressBar.setVisibility(View.GONE);
         emptyView.setVisibility(View.VISIBLE);
         Snackbar.make(findViewById(R.id.activity_main), R.string.retrieve_error,
@@ -116,6 +117,12 @@ public class LyricActivity extends DaggerAppCompatActivity implements LyricContr
         Toast.makeText(this, "hide loader", Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * build intent
+     * @param context
+     * @param trackId
+     * @return
+     */
     public static Intent buildIntent(Context context, Integer trackId) {
         Bundle bundle = Utils.buildLyricsParams(Integer.toString(trackId));
         Intent intent = new Intent(context, LyricActivity.class);

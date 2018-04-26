@@ -26,7 +26,7 @@
             android:id="@+id/ownerEditTextLayoutId"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/owner_hint"/>
+            android:hint="@string/country_hint"/>
     </android.support.design.widget.TextInputLayout>
 
     <!--pageSize-->
@@ -39,7 +39,7 @@
             android:id="@+id/repoEditTextLayoutId"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/repo_hint"/>
+            android:hint="@string/page_size_hint"/>
     </android.support.design.widget.TextInputLayout>
 
     <!--hasLyrics-->
