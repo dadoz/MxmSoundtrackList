@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">MXM track list</string>
+    <string name="owner_hint">owner</string>
+    <string name="repo_hint">repo</string>
+    <string name="find_button">FIND</string>
+    <string name="retrieve_error">Oh Snap! You got some error on your request!</string>
+    <string name="no_data_found">Oh Snap! \nNo data has been found!</string>
+    <string name="intro">Insert track list data</string>
+    <string name="no_input_data">No Input data</string>
+</resources>

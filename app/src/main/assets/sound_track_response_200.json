@@ -1,0 +1,102 @@
+{
+  "message": {
+    "header": {
+      "status_code": 200,
+      "execute_time": 0.049340009689331
+    },
+    "body": {
+      "track_list": [
+        {
+          "track": {
+            "track_id": 13393441,
+            "track_mbid": "028efe7f-cdfb-4135-846f-848f2fff15b1",
+            "track_length": 287,
+            "lyrics_id": 6508322,
+            "instrumental": 0,
+            "subtitle_id": 0,
+            "track_name": "Someone Like You",
+            "track_rating": 100,
+            "album_name": "21",
+            "album_id": 13395269,
+            "artist_id": 346898,
+            "album_coverart_100x100": "http:\/\/api.musixmatch.com\/albumcover\/13395269.jpg",
+            "artist_mbid": "cc2c9c3c-b7bc-4b8b-84d8-4fbd8779e493",
+            "artist_name": "Adele"
+          }
+        },
+        {
+          "track": {
+            "track_id": 15418948,
+            "track_mbid": "574eafc0-6909-4278-94fa-083ea5aefc61",
+            "track_length": 278,
+            "lyrics_id": 6804063,
+            "instrumental": 0,
+            "subtitle_id": 0,
+            "track_name": "Paradise",
+            "track_rating": 100,
+            "album_name": "Mylo Xyloto",
+            "album_id": 13879539,
+            "artist_id": 1039,
+            "album_coverart_100x100": "http:\/\/api.musixmatch.com\/albumcover\/13879539.jpg",
+            "artist_mbid": "cc197bad-dc9c-440d-a5b5-d52ba2e14234",
+            "artist_name": "Coldplay"
+          }
+        },
+        {
+          "track": {
+            "track_id": 15954661,
+            "track_mbid": "73f71b38-d961-4bd6-acc4-77d1a168e862",
+            "track_length": 232,
+            "lyrics_id": 6920386,
+            "instrumental": 0,
+            "subtitle_id": 0,
+            "track_name": "La differenza tra me e te",
+            "track_rating": 100,
+            "album_name": "L'amore \u00e8 una cosa semplice",
+            "album_id": 13911333,
+            "artist_id": 21903,
+            "album_coverart_100x100": "http:\/\/api.musixmatch.com\/albumcover\/13911333.jpg",
+            "artist_mbid": "d12b05b0-a0af-4c2c-8c8c-ab8bcf49439e",
+            "artist_name": "Tiziano Ferro"
+          }
+        },
+        {
+          "track": {
+            "track_id": 15903690,
+            "track_mbid": "f6160266-e028-4d85-b9e6-5b320629dd23",
+            "track_length": 0,
+            "lyrics_id": 6988405,
+            "instrumental": 0,
+            "subtitle_id": 0,
+            "track_name": "We Found Love (feat. Calvin Harris)",
+            "track_rating": 100,
+            "album_name": "Talk That Talk",
+            "album_id": 13916957,
+            "artist_id": 150259,
+            "album_coverart_100x100": "http:\/\/api.musixmatch.com\/albumcover\/13916957.jpg",
+            "artist_mbid": "73e5e69d-3554-40d8-8516-00cb38737a1c",
+            "artist_name": "Rihanna"
+          }
+        },
+        {
+          "track": {
+            "track_id": 15869802,
+            "track_mbid": "ef312302-1b9a-4743-9393-d99be9e17a1c",
+            "track_length": 241,
+            "lyrics_id": 6967198,
+            "instrumental": 0,
+            "subtitle_id": 0,
+            "track_name": "Eclissi del cuore",
+            "track_rating": 58,
+            "album_name": "Eclissi del cuore",
+            "album_id": 13915109,
+            "artist_id": 13829568,
+            "album_coverart_100x100": "http:\/\/api.musixmatch.com\/images\/albums\/9\/4\/8\/1\/1\/8\/13811849.jpg",
+            "artist_mbid": "",
+            "artist_name": "L'Aura feat. Nek"
+          }
+        }
+      ]
+    }
+  }
+}
