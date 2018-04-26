@@ -17,9 +17,11 @@ import java.util.List;
 
 public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.ViewHolder> {
     private List<?> items;
+    private OnTrackItemClickListener listener;
 
-    public TrackListAdapter(List<?> devices) {
+    public TrackListAdapter(List<?> devices, OnTrackItemClickListener lst) {
         items = devices;
+        listener = lst;
     }
 
     @NonNull
@@ -35,6 +37,8 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.View
         Track stargazer = (Track) items.get(position);
 //        setAvatar(vh, stargazer.getAvatarUrl());
         vh.usernameTextview.setText(stargazer.getTrackName());
+        if (listener != null)
+            vh.itemView.setOnClickListener(view -> listener.onTrackItemClick(view, position));
     }
 
     @Override
@@ -74,6 +78,13 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.View
         }
 
 
+    }
+
+    /**
+     *
+     */
+    interface OnTrackItemClickListener {
+        void onTrackItemClick(View view, int position);
     }
 
 }

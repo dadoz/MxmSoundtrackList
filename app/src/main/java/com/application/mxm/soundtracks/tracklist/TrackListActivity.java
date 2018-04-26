@@ -1,5 +1,6 @@
 package com.application.mxm.soundtracks.tracklist;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,6 +11,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.application.mxm.soundtracks.R;
+import com.application.mxm.soundtracks.lyric.LyricActivity;
 import com.application.mxm.soundtracks.ui.EmptyView;
 import com.application.mxm.soundtracks.utils.Utils;
 
@@ -24,7 +26,7 @@ import static com.application.mxm.soundtracks.MainActivity.TRACK_PARAMS_KEY;
 /**
  * stargazer activity
  */
-public class TrackListActivity extends DaggerAppCompatActivity implements TrackContract.TrackView {
+public class TrackListActivity extends DaggerAppCompatActivity implements TrackContract.TrackView, TrackListAdapter.OnTrackItemClickListener {
     public static final String LYRICS_PARAMS_KEY = "LYRICS_PARAMS_KEY";
     RecyclerView recyclerView;
     ProgressBar progressBar;
@@ -127,6 +129,15 @@ public class TrackListActivity extends DaggerAppCompatActivity implements TrackC
         recyclerView.setVisibility(View.VISIBLE);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(new TrackListAdapter(items));
+        recyclerView.setAdapter(new TrackListAdapter(items, this));
+    }
+
+    @Override
+    public void onTrackItemClick(View view, int position) {
+        Bundle bundle = Utils.buildLyricsParams("bllalala");
+        Intent intent = new Intent(this, LyricActivity.class);
+        intent.putExtra(LYRICS_PARAMS_KEY, bundle);
+        startActivity(intent);
+
     }
 }
