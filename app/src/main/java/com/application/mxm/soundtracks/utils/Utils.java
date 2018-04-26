@@ -83,4 +83,7 @@ public class Utils {
         }
     }
 
+    public static String getTrackParamsKey(String page, String pageSize, String country, String fHasLyrics) {
+        return page + "_" +pageSize + "_" + country + "_" + fHasLyrics;
+    }
 }

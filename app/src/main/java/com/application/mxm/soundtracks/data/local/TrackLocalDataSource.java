@@ -3,8 +3,9 @@ package com.application.mxm.soundtracks.data.local;
 
 import com.application.mxm.soundtracks.data.TrackDataSource;
 import com.application.mxm.soundtracks.data.model.Track;
+import com.application.mxm.soundtracks.utils.Utils;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Singleton;
@@ -16,7 +17,7 @@ import io.reactivex.Observable;
  */
 @Singleton
 public class TrackLocalDataSource implements TrackDataSource {
-    private List list = new ArrayList();
+    private HashMap<String, List<Track>> map = new HashMap<>();
 
     /**
      *
@@ -29,15 +30,18 @@ public class TrackLocalDataSource implements TrackDataSource {
      */
     @Override
     public Observable<List<Track>> getTracks(String page, String pageSize, String country, String fHasLyrics, String apiKey) {
-        return Observable.just(list);
+        return Observable.just(map.get(Utils.getTrackParamsKey(page, pageSize, country, fHasLyrics)));
     }
 
     @Override
-    public boolean hasTracks() {
-        return list.size() != 0;
+    public boolean hasTracks(String paramsKey) {
+        return map.get(paramsKey) != null &&
+                map.get(paramsKey).size() != 0;
     }
 
-    public void setTracks(List stargazerList) {
-        list.addAll(stargazerList);
+    @Override
+    public void setTracks(List stargazerList, String paramsKey) {
+        //set all items as new
+        map.put(paramsKey, stargazerList);
     }
 }

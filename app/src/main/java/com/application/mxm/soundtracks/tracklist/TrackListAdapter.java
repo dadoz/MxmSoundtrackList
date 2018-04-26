@@ -86,7 +86,7 @@ public class TrackListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
      * @param items
      */
     public void addItems(List<Track> items) {
-        items.addAll(items);
+        this.items.addAll(items);
         notifyDataSetChanged();
     }
 

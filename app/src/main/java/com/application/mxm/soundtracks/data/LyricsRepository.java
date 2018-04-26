@@ -19,13 +19,11 @@ public class LyricsRepository {
 
     private final LyricsDataSource localDataSource;
     private final LyricsDataSource networkDataSource;
-    private final Context context;
 
     @Inject
     LyricsRepository(Context context, @Local LyricsDataSource localDataSource, @Remote LyricsDataSource networkDataSource) {
         this.localDataSource = localDataSource;
         this.networkDataSource = networkDataSource;
-        this.context = context;
     }
 
     /**
@@ -33,14 +31,14 @@ public class LyricsRepository {
      * @return
      */
     public Observable<Lyric> getLyrics(String trackId) {
-        if (localDataSource.hasLyrics()) {
+        if (localDataSource.hasLyrics(trackId)) {
             //show data from cache
             return localDataSource.getLyrics(trackId, BuildConfig.API_KEY);
         }
 
         //show data from netwkor and added on cache if some result
         return networkDataSource.getLyrics(trackId, BuildConfig.API_KEY)
-                .doOnNext(localDataSource::setLyrics);
+                .doOnNext(items -> localDataSource.setLyrics(items, trackId));
     }
 
     public void refreshCache() {

@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.SparseArray;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -92,8 +91,6 @@ public class TrackListActivity extends DaggerAppCompatActivity implements TrackC
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                if (presenter != null)
-                    presenter.unsubscribe();
                 onBackPressed();
                 break;
         }
@@ -169,12 +166,6 @@ public class TrackListActivity extends DaggerAppCompatActivity implements TrackC
 
     @Override
     public void onTrackLoadMoreClick(View view) {
-        //increment page
-        SparseArray<String> params = presenter.getParams();
-        int nextPage = Integer.parseInt(params.get(0)) + 1;
-        params.setValueAt(0, Integer.toString(nextPage));
-
-        //retrieve new items
-        presenter.retrieveItems(params);
+        presenter.retrieveMoreItems();
     }
 }

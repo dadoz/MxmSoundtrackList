@@ -70,7 +70,7 @@ public class TrackPresenter implements TrackContract.TrackPresenterInterface {
     @Override
     public void retrieveItems(SparseArray<String> params) {
         Log.e(TAG, params.toString());
-        //TODO mv set params
+        //set params
         this.params = params;
 
         //build obs
@@ -81,8 +81,12 @@ public class TrackPresenter implements TrackContract.TrackPresenterInterface {
                 .compose(composeLoaderTransformer(loader))
                 .doOnError(Throwable::printStackTrace)
                 .subscribe(
-                        items -> trackView.get().onRenderData(items),
-                        error -> trackView.get().onError(error.getMessage())));
+                        items -> {
+                            trackView.get().onRenderData(items);
+                        },
+                        error -> {
+                            trackView.get().onError(error.getMessage());
+                        }));
     }
 
 
@@ -102,6 +106,15 @@ public class TrackPresenter implements TrackContract.TrackPresenterInterface {
 
     public SparseArray<String> getParams() {
         return params;
+    }
+
+    /**
+     *
+     */
+    public void retrieveMoreItems() {
+        int nextPage = Integer.parseInt(params.get(0)) + 1;
+        params.setValueAt(0, Integer.toString(nextPage));
+        retrieveItems(params);
     }
 
     /**

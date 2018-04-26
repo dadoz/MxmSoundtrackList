@@ -9,7 +9,6 @@ import io.reactivex.Observable;
 
 public interface TrackDataSource {
     Observable<List<Track>> getTracks(String page, String pageSize, String country, String fHasLyrics, String apiKey);
-//    Observable<List<Track>> getTracks(Context context, String owner, String repo);
-    void setTracks(List<Track> stargazers);
-    boolean hasTracks();
+    void setTracks(List<Track> stargazers, String paramsKey);
+    boolean hasTracks(String paramsKey);
 }

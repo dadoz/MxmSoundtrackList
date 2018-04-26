@@ -16,29 +16,6 @@ import io.reactivex.Observable;
 
 @Singleton
 public class TrackNetworkDataSource extends RetrofitDataSourceBase implements TrackDataSource {
-
-//    public Observable<List<Track>> getTracks(Context context, String owner, String repo) {
-//        try {
-//            InputStream inputStream = context.getAssets().open("sound_track_response_200.json");
-//            int size = inputStream.available();
-//            byte[] buffer = new byte[size];
-//            inputStream.read(buffer);
-//            inputStream.close();
-//            String json = new String(buffer, "UTF-8");
-//
-//            List<Track> res = new GsonBuilder()
-//                    .registerTypeAdapter(new TypeToken<List<Track>>() {}.getType(), new RetrofitServiceRx.TrackJsonDeserializer())
-//                    .registerTypeAdapter(Lyric.class, new RetrofitServiceRx.LyricsJsonDeserializer())
-//                    .create()
-//                    .fromJson(json, new TypeToken<List<Track>>() {}.getType());
-//            return Observable.just(res);
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            throw new UnsupportedOperationException("error on get data");
-//        }
-//    }
-
     /**
      *
      * @param page
@@ -55,15 +32,14 @@ public class TrackNetworkDataSource extends RetrofitDataSourceBase implements Tr
     }
 
     /**
-     * TODO plese refactorize
      * @param stargazers
      */
     @Override
-    public void setTracks(List<Track> stargazers) {
+    public void setTracks(List<Track> stargazers, String paramsKey) {
     }
 
     @Override
-    public boolean hasTracks() {
+    public boolean hasTracks(String paramsKey) {
         return false;
     }
 }

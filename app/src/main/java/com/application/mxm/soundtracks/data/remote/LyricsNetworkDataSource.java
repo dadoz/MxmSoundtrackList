@@ -51,11 +51,11 @@ public class LyricsNetworkDataSource extends RetrofitDataSourceBase implements L
      * TODO plese refactorize
      */
     @Override
-    public void setLyrics(Lyric lyric) {
+    public void setLyrics(Lyric lyric, String trackId) {
     }
 
     @Override
-    public boolean hasLyrics() {
+    public boolean hasLyrics(String trackId) {
         return false;
     }
 }

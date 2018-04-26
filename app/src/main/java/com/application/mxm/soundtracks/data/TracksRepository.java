@@ -6,6 +6,7 @@ import com.application.mxm.soundtracks.BuildConfig;
 import com.application.mxm.soundtracks.data.local.Local;
 import com.application.mxm.soundtracks.data.model.Track;
 import com.application.mxm.soundtracks.data.remote.Remote;
+import com.application.mxm.soundtracks.utils.Utils;
 
 import java.util.List;
 
@@ -21,13 +22,11 @@ public class TracksRepository {
 
     private final TrackDataSource localDataSource;
     private final TrackDataSource networkDataSource;
-    private final Context context;
 
     @Inject
     TracksRepository(Context context, @Local TrackDataSource localDataSource, @Remote TrackDataSource networkDataSource) {
         this.localDataSource = localDataSource;
         this.networkDataSource = networkDataSource;
-        this.context = context;
     }
 
     /**
@@ -35,14 +34,16 @@ public class TracksRepository {
      * @return
      */
     public Observable<List<Track>> getTracks(String page, String pageSize, String country, String fHasLyrics) {
-        if (localDataSource.hasTracks()) {
+        //set params key
+        if (localDataSource.hasTracks(Utils.getTrackParamsKey(page, pageSize, country, fHasLyrics))) {
             //show data from cache
             return localDataSource.getTracks(page, pageSize, country, fHasLyrics, BuildConfig.API_KEY);
         }
 
         //show data from netwkor and added on cache if some result
-        return networkDataSource.getTracks(page, pageSize, country, fHasLyrics, BuildConfig.API_KEY)
-                .doOnNext(localDataSource::setTracks);
+        return networkDataSource
+                .getTracks(page, pageSize, country, fHasLyrics, BuildConfig.API_KEY)
+                .doOnNext(list -> localDataSource.setTracks(list, Utils.getTrackParamsKey(page, pageSize, country, fHasLyrics)));
     }
 
     public void refreshCache() {
