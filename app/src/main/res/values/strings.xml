@@ -7,4 +7,5 @@
     <string name="no_data_found">Oh Snap! \nNo data has been found!</string>
     <string name="intro">Insert track list data</string>
     <string name="no_input_data">No Input data</string>
+    <string name="error_network_no_network">Network error</string>
 </resources>

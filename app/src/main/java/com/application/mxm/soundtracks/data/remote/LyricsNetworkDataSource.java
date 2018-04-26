@@ -19,7 +19,7 @@ import io.reactivex.Observable;
  */
 
 @Singleton
-public class LyricsNetworkDataSource implements LyricsDataSource {
+public class LyricsNetworkDataSource extends RetrofitDataSourceBase implements LyricsDataSource {
     /**
      *
      * @param owner
@@ -49,6 +49,7 @@ public class LyricsNetworkDataSource implements LyricsDataSource {
 
 /*    public Observable<List<Track>> getStargazer(String owner, String repo) {
         return new RetrofitServiceRx().getTrackRetrofit()
+                .compose(handleRxErrorsTransformer())
                 .getStargazers(owner, repo);
     }
 */

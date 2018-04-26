@@ -22,7 +22,7 @@ import io.reactivex.Observable;
  */
 
 @Singleton
-public class TrackNetworkDataSource implements TrackDataSource {
+public class TrackNetworkDataSource extends RetrofitDataSourceBase implements TrackDataSource {
     /**
      *
      * @param owner
@@ -53,6 +53,7 @@ public class TrackNetworkDataSource implements TrackDataSource {
 
 /*    public Observable<List<Track>> getStargazer(String owner, String repo) {
         return new RetrofitServiceRx().getTrackRetrofit()
+                .compose(handleRxErrorsTransformer());
                 .getStargazers(owner, repo);
     }
 */
