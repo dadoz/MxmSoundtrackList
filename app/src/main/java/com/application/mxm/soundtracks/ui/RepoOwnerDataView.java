@@ -1,7 +1,6 @@
 package com.application.mxm.soundtracks.ui;
 
 import android.content.Context;
-import android.os.Parcelable;
 import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -12,16 +11,13 @@ import android.widget.RelativeLayout;
 
 import com.application.mxm.soundtracks.R;
 
-import icepick.Icepick;
-import icepick.State;
-
 public class RepoOwnerDataView extends RelativeLayout {
     Button findButton;
     TextInputLayout ownerTextInputLayout;
     TextInputLayout repoTextInputLayout;
-    @State
+//    @State
     String repo;
-    @State
+//    @State
     String owner;
 
     public RepoOwnerDataView(Context context) {
@@ -42,8 +38,8 @@ public class RepoOwnerDataView extends RelativeLayout {
     private void initView() {
         View view = inflate(getContext(), R.layout.repo_owner_textinput_layout, this);
         findButton = (Button) view.findViewById(R.id.findButtonId);
-        ownerTextInputLayout = (TextInputLayout) view.findViewById(R.id.ownerTextInputLayoutId);
-        repoTextInputLayout = (TextInputLayout) view.findViewById(R.id.repoTextInputLayoutId);
+        ownerTextInputLayout =  view.findViewById(R.id.ownerTextInputLayoutId);
+        repoTextInputLayout = view.findViewById(R.id.repoTextInputLayoutId);
         ownerTextInputLayout.getEditText().addTextChangedListener(new TextWatcherImpl("owner"));
         repoTextInputLayout.getEditText().addTextChangedListener(new TextWatcherImpl("repo"));
     }
@@ -73,15 +69,15 @@ public class RepoOwnerDataView extends RelativeLayout {
             ownerTextInputLayout.setError(getContext().getString(R.string.no_input_data));
     }
 
-    @Override public Parcelable onSaveInstanceState() {
-        return Icepick.saveInstanceState(this, super.onSaveInstanceState());
-    }
-
-    @Override public void onRestoreInstanceState(Parcelable state) {
-        super.onRestoreInstanceState(Icepick.restoreInstanceState(this, state));
-        ownerTextInputLayout.getEditText().setText(owner);
-        repoTextInputLayout.getEditText().setText(repo);
-    }
+//    @Override public Parcelable onSaveInstanceState() {
+//        return Icepick.saveInstanceState(this, super.onSaveInstanceState());
+//    }
+//
+//    @Override public void onRestoreInstanceState(Parcelable state) {
+//        super.onRestoreInstanceState(Icepick.restoreInstanceState(this, state));
+//        ownerTextInputLayout.getEditText().setText(owner);
+//        repoTextInputLayout.getEditText().setText(repo);
+//    }
 
 
     /**

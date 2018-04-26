@@ -40,8 +40,8 @@ public class StargazersRetrofitTest {
         server.start();
         RetrofitManager.baseUrlEndpoint = server.url("/").url().toString();
 
-        ((StargazersApplication) mRule.getActivity().getApplication()).setOwner("dadoz");
-        ((StargazersApplication) mRule.getActivity().getApplication()).setRepo("SelectCardViewPrototype");
+        ((SoundtrackApplication) mRule.getActivity().getApplication()).setOwner("dadoz");
+        ((SoundtrackApplication) mRule.getActivity().getApplication()).setRepo("SelectCardViewPrototype");
 
         mRule.getActivity().startActivity(new Intent(mRule.getActivity(), TrackListActivity.class));
     }

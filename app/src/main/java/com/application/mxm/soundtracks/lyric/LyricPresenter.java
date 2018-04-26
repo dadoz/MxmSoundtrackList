@@ -3,10 +3,10 @@ package com.application.mxm.soundtracks.lyric;
 import android.util.Log;
 import android.util.SparseArray;
 
-import com.application.mxm.soundtracks.data.TracksRepository;
+import com.application.mxm.soundtracks.data.LyricsRepository;
+import com.application.mxm.soundtracks.data.model.Lyric;
 
 import java.lang.ref.WeakReference;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -20,14 +20,14 @@ import io.reactivex.schedulers.Schedulers;
 public class LyricPresenter implements LyricContract.LyricsPresenterInterface {
     private static final String TAG = "TrackPresenter";
     private static WeakReference<LyricContract.LyricsView> wifiDeviceNetworkView;
-    private final TracksRepository repository;
+    private final LyricsRepository repository;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
     protected ProgressLoader loader;
     private int limit = 0;
     private int N_ITEM_PAGE = 2;
 
     @Inject
-    LyricPresenter(TracksRepository repository) {
+    LyricPresenter(LyricsRepository repository) {
         this.repository = repository;
     }
 
@@ -65,8 +65,7 @@ public class LyricPresenter implements LyricContract.LyricsPresenterInterface {
     public void retrieveItems(SparseArray<String> params) {
         Log.e(TAG, params.toString());
         compositeDisposable.add(repository
-                .getStargazer(params.get(0), params.get(1))
-                .map(list -> list.subList(limit, limit + N_ITEM_PAGE)) //limit
+                .getLyrics(params.get(0), params.get(1))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(composeLoaderTransformer(loader))
@@ -83,7 +82,7 @@ public class LyricPresenter implements LyricContract.LyricsPresenterInterface {
      * @param <T>
      * @return
      */
-    <T extends List>ObservableTransformer<T, T> composeLoaderTransformer(ProgressLoader loader) {
+    <T extends Lyric>ObservableTransformer<T, T> composeLoaderTransformer(ProgressLoader loader) {
         return upstream -> upstream
                 .doOnSubscribe(disposable -> loader.show.run())
                 .doOnError(error -> loader.hide.run())

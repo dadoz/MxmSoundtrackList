@@ -5,7 +5,7 @@ import com.application.mxm.soundtracks.di.DaggerAppComponent;
 import dagger.android.AndroidInjector;
 import dagger.android.DaggerApplication;
 
-public class StargazersApplication extends DaggerApplication {
+public class SoundtrackApplication extends DaggerApplication {
     private String owner;
     private String repo;
 

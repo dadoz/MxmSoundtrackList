@@ -3,13 +3,12 @@ package com.application.mxm.soundtracks.lyric;
 import android.util.SparseArray;
 
 import com.application.mxm.soundtracks.BasePresenter;
-
-import java.util.List;
+import com.application.mxm.soundtracks.data.model.Lyric;
 
 public interface LyricContract {
 
     interface LyricsView {
-        void onRenderData(List<?> items);
+        void onRenderData(Lyric item);
         void onError(String error);
         void showStandardLoading();
         void hideStandardLoading();

@@ -2,20 +2,18 @@ package com.application.mxm.soundtracks.lyric;
 
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.application.mxm.soundtracks.R;
-import com.application.mxm.soundtracks.StargazersApplication;
-import com.application.mxm.soundtracks.adapter.TrackListAdapter;
+import com.application.mxm.soundtracks.SoundtrackApplication;
+import com.application.mxm.soundtracks.data.model.Lyric;
 import com.application.mxm.soundtracks.ui.EmptyView;
 import com.application.mxm.soundtracks.utils.Utils;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -40,8 +38,8 @@ public class LyricActivity extends DaggerAppCompatActivity implements LyricContr
         setContentView(R.layout.activity_track_list);
 
         //TODO wth this is really terrible
-        repo = ((StargazersApplication) getApplication()).getRepo();
-        owner = ((StargazersApplication) getApplication()).getOwner();
+        repo = ((SoundtrackApplication) getApplication()).getRepo();
+        owner = ((SoundtrackApplication) getApplication()).getOwner();
 
         bindView();
         onInitView();
@@ -95,10 +93,10 @@ public class LyricActivity extends DaggerAppCompatActivity implements LyricContr
     }
 
     @Override
-    public void onRenderData(List<?> items) {
+    public void onRenderData(Lyric item) {
         progressBar.setVisibility(View.GONE);
         emptyView.setVisibility(View.GONE);
-        initRecyclerView(items);
+        Log.e(getClass().getName(), item.getLyricsBody());
     }
 
 
@@ -121,17 +119,4 @@ public class LyricActivity extends DaggerAppCompatActivity implements LyricContr
         Toast.makeText(this, "hide loader", Toast.LENGTH_SHORT).show();
     }
 
-    /**
-     * init recycler view binding data by adapter
-     * @param items
-     */
-    private void initRecyclerView(List<?> items) {
-        if (items.size() == 0) {
-            return;
-        }
-        recyclerView.setVisibility(View.VISIBLE);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(new TrackListAdapter(items));
-    }
 }

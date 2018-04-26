@@ -1,7 +1,9 @@
 package com.application.mxm.soundtracks.di;
 
-import com.application.mxm.soundtracks.tracklist.TrackPresenterModule;
+import com.application.mxm.soundtracks.lyric.LyricActivity;
+import com.application.mxm.soundtracks.lyric.LyricPresenterModule;
 import com.application.mxm.soundtracks.tracklist.TrackListActivity;
+import com.application.mxm.soundtracks.tracklist.TrackPresenterModule;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -18,5 +20,9 @@ public abstract class ActivityBindingModule {
     @ActivityScoped
     @ContributesAndroidInjector(modules = TrackPresenterModule.class)
     abstract TrackListActivity tasksActivity();
+
+    @ActivityScoped
+    @ContributesAndroidInjector(modules = LyricPresenterModule.class)
+    abstract LyricActivity lyricActivity();
 
 }

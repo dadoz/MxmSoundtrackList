@@ -24,7 +24,7 @@ public class TrackListAdapter extends RecyclerView.Adapter<TrackListAdapter.View
     @Override
     public TrackListAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.stargazer_item, viewGroup, false);
+                .inflate(R.layout.track_item, viewGroup, false);
         return new TrackListAdapter.ViewHolder(view);
     }
 

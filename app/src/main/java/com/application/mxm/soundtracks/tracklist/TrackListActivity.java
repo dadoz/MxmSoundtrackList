@@ -10,7 +10,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.application.mxm.soundtracks.R;
-import com.application.mxm.soundtracks.StargazersApplication;
+import com.application.mxm.soundtracks.SoundtrackApplication;
 import com.application.mxm.soundtracks.adapter.TrackListAdapter;
 import com.application.mxm.soundtracks.ui.EmptyView;
 import com.application.mxm.soundtracks.utils.Utils;
@@ -40,8 +40,8 @@ public class TrackListActivity extends DaggerAppCompatActivity implements TrackC
         setContentView(R.layout.activity_track_list);
 
         //TODO wth this is really terrible
-        repo = ((StargazersApplication) getApplication()).getRepo();
-        owner = ((StargazersApplication) getApplication()).getOwner();
+        repo = ((SoundtrackApplication) getApplication()).getRepo();
+        owner = ((SoundtrackApplication) getApplication()).getOwner();
 
         bindView();
         onInitView();
