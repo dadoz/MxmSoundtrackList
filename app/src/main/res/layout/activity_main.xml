@@ -7,8 +7,8 @@
     android:padding="@dimen/activity_vertical_margin"
     tools:context="com.application.mxm.soundtracks.MainActivity">
 
-<com.application.mxm.soundtracks.ui.RepoOwnerDataView
-    android:id="@+id/repoOwnerDataViewId"
+<com.application.mxm.soundtracks.ui.TrackInputDataView
+    android:id="@+id/trackInputDataViewId"
     android:layout_width="match_parent"
     android:layout_height="match_parent"/>
 

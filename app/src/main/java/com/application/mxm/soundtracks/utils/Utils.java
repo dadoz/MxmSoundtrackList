@@ -15,7 +15,7 @@ public class Utils {
      * @param fHasLyrics
      * @return
      */
-    public static Bundle buildTrackParams(String page, String pageSize, String country, String fHasLyrics) {
+    public static Bundle buildTrackParams(String country, String pageSize, String fHasLyrics, String page) {
         Bundle bundle = new Bundle();
         bundle.putString("PAGE", page);
         bundle.putString("PAGE_SIZE", pageSize);

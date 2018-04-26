@@ -6,8 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.application.mxm.soundtracks.tracklist.TrackListActivity;
-import com.application.mxm.soundtracks.ui.RepoOwnerDataView;
-import com.application.mxm.soundtracks.utils.Utils;
+import com.application.mxm.soundtracks.ui.TrackInputDataView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -16,8 +15,10 @@ import butterknife.Unbinder;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     public static final String TRACK_PARAMS_KEY = "TRACK_PARAMS_KEY";
-    @BindView(R.id.repoOwnerDataViewId)
-    RepoOwnerDataView repoOwnerDataView;
+    private static final String INIT_PAGE = "1";
+
+    @BindView(R.id.trackInputDataViewId)
+    TrackInputDataView trackInputDataView;
     private Unbinder unbinder;
 
     @Override
@@ -39,19 +40,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * init view to handle button in custom view interaction
      */
     private void onInitView() {
-        repoOwnerDataView.setFindButtonOnClickListener(this);
+        trackInputDataView.setFindButtonOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        if (!repoOwnerDataView.isValidInputData()) {
-            repoOwnerDataView.setErrorInputData();
+        if (!trackInputDataView.isValidInputData()) {
+            trackInputDataView.setErrorInputData();
             return;
         }
 
-        Bundle bundle = Utils.buildTrackParams("bla", "bla", "bla", "bla");
-        Intent intent = new Intent(this, TrackListActivity.class);
-        intent.putExtra(TRACK_PARAMS_KEY, bundle);
+        Intent intent = TrackListActivity.buildIntent(this, trackInputDataView.getcountry(),
+                trackInputDataView.getpageSize(),
+                trackInputDataView.hasLyricsCheckbox() ? "1" : "0", INIT_PAGE);
         startActivity(intent);
     }
 }

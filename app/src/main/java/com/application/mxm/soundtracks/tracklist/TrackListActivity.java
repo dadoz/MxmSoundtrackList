@@ -1,5 +1,6 @@
 package com.application.mxm.soundtracks.tracklist;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -140,4 +141,21 @@ public class TrackListActivity extends DaggerAppCompatActivity implements TrackC
         startActivity(intent);
 
     }
+
+    /**
+     *
+     * @param context
+     * @param country
+     * @param pageSize
+     * @param hasLyricsCheckbox
+     * @param initialPage
+     * @return
+     */
+    public static Intent buildIntent(Context context, String country, String pageSize, String hasLyricsCheckbox, String initialPage) {
+        Bundle bundle = Utils.buildTrackParams(country, pageSize, hasLyricsCheckbox, initialPage);
+        Intent intent = new Intent(context, TrackListActivity.class);
+        intent.putExtra(TRACK_PARAMS_KEY, bundle);
+        return intent;
+    }
+
 }

@@ -9,4 +9,5 @@
     <string name="no_input_data">No Input data</string>
     <string name="error_network_no_network">Network error</string>
     <string name="server_error">Server Error</string>
+    <string name="has_lyrics_flag_text">Has Lyrics</string>
 </resources>
