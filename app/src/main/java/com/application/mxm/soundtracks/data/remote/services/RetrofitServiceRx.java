@@ -4,16 +4,11 @@ package com.application.mxm.soundtracks.data.remote.services;
 import com.application.mxm.soundtracks.BuildConfig;
 import com.application.mxm.soundtracks.data.model.Lyric;
 import com.application.mxm.soundtracks.data.model.Track;
-import com.google.gson.Gson;
+import com.application.mxm.soundtracks.data.remote.services.gson.LyricsJsonDeserializer;
+import com.application.mxm.soundtracks.data.remote.services.gson.TrackJsonDeserializer;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
+import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.OkHttpClient;
@@ -27,7 +22,7 @@ public class RetrofitServiceRx {
      * get service
      * @return
      */
-    public TracksService getTrackRetrofit() {
+    public TracksService getSoundtrackRetrofit() {
         try {
             HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
             interceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
@@ -37,40 +32,14 @@ public class RetrofitServiceRx {
                     .baseUrl(BuildConfig.MXM_BASE_URL)
                     .client(client)
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                    .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().create()))
+                    .addConverterFactory(GsonConverterFactory.create(new GsonBuilder()
+                            .registerTypeAdapter(new TypeToken<List<Track>>(){}.getType(), new TrackJsonDeserializer())
+                            .registerTypeAdapter(Lyric.class, new LyricsJsonDeserializer())
+                            .create()))
                     .build()
                     .create(TracksService.class);
         } catch (Exception e) {
             throw new UnsupportedOperationException(e.getMessage());
-        }
-    }
-
-    /**
-     * track json to a list of track item
-     */
-    public static class TrackJsonDeserializer implements JsonDeserializer<List<Track>> {
-        @Override
-        public List<Track> deserialize(JsonElement json, Type typeOfT,
-                                 JsonDeserializationContext context) throws JsonParseException {
-            JsonArray itemArray = json.getAsJsonObject().get("message").getAsJsonObject().get("body").getAsJsonObject()
-                    .get("track_list").getAsJsonArray();
-
-            List<Track> list = new ArrayList<>();
-            for (JsonElement item : itemArray) {
-                list.add(new Gson().fromJson(item.getAsJsonObject().get("track").getAsJsonObject(), Track.class));
-            }
-            return list;
-        }
-    }
-    /**
-     * track json to a list of track item
-     */
-    public static class LyricsJsonDeserializer implements JsonDeserializer<Lyric> {
-        @Override
-        public Lyric deserialize(JsonElement json, Type typeOfT,
-                                 JsonDeserializationContext context) throws JsonParseException {
-            return new Gson().fromJson(json.getAsJsonObject().get("message").getAsJsonObject().get("body")
-                    .getAsJsonObject().get("lyrics").getAsJsonObject(), typeOfT);
         }
     }
 }

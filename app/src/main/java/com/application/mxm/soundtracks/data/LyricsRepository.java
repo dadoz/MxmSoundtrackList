@@ -2,6 +2,7 @@ package com.application.mxm.soundtracks.data;
 
 import android.content.Context;
 
+import com.application.mxm.soundtracks.BuildConfig;
 import com.application.mxm.soundtracks.data.local.Local;
 import com.application.mxm.soundtracks.data.model.Lyric;
 import com.application.mxm.soundtracks.data.remote.Remote;
@@ -31,14 +32,14 @@ public class LyricsRepository {
      * get cached or network data
      * @return
      */
-    public Observable<Lyric> getLyrics(String owner, String repo) {
+    public Observable<Lyric> getLyrics(String trackId) {
         if (localDataSource.hasLyrics()) {
             //show data from cache
-            return localDataSource.getLyrics(context, owner, repo);
+            return localDataSource.getLyrics(trackId, BuildConfig.API_KEY);
         }
 
         //show data from netwkor and added on cache if some result
-        return networkDataSource.getLyrics(context, owner, repo)
+        return networkDataSource.getLyrics(trackId, BuildConfig.API_KEY)
                 .doOnNext(localDataSource::setLyrics);
     }
 

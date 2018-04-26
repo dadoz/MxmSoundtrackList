@@ -65,7 +65,7 @@ public class LyricPresenter implements LyricContract.LyricsPresenterInterface {
     public void retrieveItems(SparseArray<String> params) {
         Log.e(TAG, params.toString());
         compositeDisposable.add(repository
-                .getLyrics(params.get(0), params.get(1))
+                .getLyrics(params.get(0))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(composeLoaderTransformer(loader))

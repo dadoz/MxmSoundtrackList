@@ -10,12 +10,11 @@ public class NetworkException extends RuntimeException {
         super(message, cause);
     }
 
-    public static NetworkException noNetwork(Throwable cause) {
-        return new NetworkException("No network exception", cause);
-    }
-
     public int getErrorString() {
         return R.string.error_network_no_network;
     }
 
+    public static NetworkException networkError(Throwable error) {
+        return new NetworkException("Network exception", error);
+    }
 }

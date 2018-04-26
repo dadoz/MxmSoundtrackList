@@ -31,7 +31,7 @@ public class RetrofitDataSourceBase {
                     }
 
                     //else generic no net error
-                    return Observable.error(NetworkException.noNetwork(error));
+                    return Observable.error(NetworkException.networkError(error));
                 });
     }
 }

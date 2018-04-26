@@ -65,7 +65,7 @@ public class TrackPresenter implements TrackContract.TrackPresenterInterface {
     public void retrieveItems(SparseArray<String> params) {
         Log.e(TAG, params.toString());
         compositeDisposable.add(repository
-                .getTracks(params.get(0), params.get(1))
+                .getTracks(params.get(0), params.get(1), params.get(2), params.get(3))
 //                .map(list -> list.subList(limit, limit + N_ITEM_PAGE)) //limit
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

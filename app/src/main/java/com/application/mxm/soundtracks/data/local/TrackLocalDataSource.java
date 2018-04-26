@@ -1,8 +1,6 @@
 package com.application.mxm.soundtracks.data.local;
 
 
-import android.content.Context;
-
 import com.application.mxm.soundtracks.data.TrackDataSource;
 import com.application.mxm.soundtracks.data.model.Track;
 
@@ -20,7 +18,17 @@ import io.reactivex.Observable;
 public class TrackLocalDataSource implements TrackDataSource {
     private List list = new ArrayList();
 
-    public Observable<List<Track>> getTracks(Context context, String owner, String repo) {
+    /**
+     *
+     * @param page
+     * @param pageSize
+     * @param country
+     * @param fHasLyrics
+     * @param apiKey
+     * @return
+     */
+    @Override
+    public Observable<List<Track>> getTracks(String page, String pageSize, String country, String fHasLyrics, String apiKey) {
         return Observable.just(list);
     }
 

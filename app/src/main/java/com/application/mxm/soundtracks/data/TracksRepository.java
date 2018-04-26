@@ -2,6 +2,7 @@ package com.application.mxm.soundtracks.data;
 
 import android.content.Context;
 
+import com.application.mxm.soundtracks.BuildConfig;
 import com.application.mxm.soundtracks.data.local.Local;
 import com.application.mxm.soundtracks.data.model.Track;
 import com.application.mxm.soundtracks.data.remote.Remote;
@@ -33,14 +34,14 @@ public class TracksRepository {
      * get cached or network data
      * @return
      */
-    public Observable<List<Track>> getTracks(String owner, String repo) {
+    public Observable<List<Track>> getTracks(String page, String pageSize, String country, String fHasLyrics) {
         if (localDataSource.hasTracks()) {
             //show data from cache
-            return localDataSource.getTracks(context, owner, repo);
+            return localDataSource.getTracks(page, pageSize, country, fHasLyrics, BuildConfig.API_KEY);
         }
 
         //show data from netwkor and added on cache if some result
-        return networkDataSource.getTracks(context, owner, repo)
+        return networkDataSource.getTracks(page, pageSize, country, fHasLyrics, BuildConfig.API_KEY)
                 .doOnNext(localDataSource::setTracks);
     }
 
