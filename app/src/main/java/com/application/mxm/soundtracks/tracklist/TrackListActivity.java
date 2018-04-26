@@ -10,7 +10,6 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.application.mxm.soundtracks.R;
-import com.application.mxm.soundtracks.SoundtrackApplication;
 import com.application.mxm.soundtracks.ui.EmptyView;
 import com.application.mxm.soundtracks.utils.Utils;
 
@@ -20,12 +19,13 @@ import javax.inject.Inject;
 
 import dagger.android.support.DaggerAppCompatActivity;
 
+import static com.application.mxm.soundtracks.MainActivity.TRACK_PARAMS_KEY;
+
 /**
  * stargazer activity
  */
 public class TrackListActivity extends DaggerAppCompatActivity implements TrackContract.TrackView {
-    private String owner;
-    private String repo;
+    public static final String LYRICS_PARAMS_KEY = "LYRICS_PARAMS_KEY";
     RecyclerView recyclerView;
     ProgressBar progressBar;
     EmptyView emptyView;
@@ -37,10 +37,6 @@ public class TrackListActivity extends DaggerAppCompatActivity implements TrackC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_track_list);
-
-        //TODO wth this is really terrible
-        repo = ((SoundtrackApplication) getApplication()).getRepo();
-        owner = ((SoundtrackApplication) getApplication()).getOwner();
 
         bindView();
         onInitView();
@@ -61,7 +57,7 @@ public class TrackListActivity extends DaggerAppCompatActivity implements TrackC
     private void onInitView() {
         initActionbar();
         presenter.bindView(this);
-        presenter.retrieveItems(Utils.buildParams(owner, repo));
+        presenter.retrieveItems(Utils.getTrackParamsFromBundle(getIntent().getExtras().getBundle(TRACK_PARAMS_KEY)));
     }
 
     /**

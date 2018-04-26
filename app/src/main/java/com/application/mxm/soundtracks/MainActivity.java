@@ -5,24 +5,34 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import com.application.mxm.soundtracks.lyric.LyricActivity;
+import com.application.mxm.soundtracks.tracklist.TrackListActivity;
 import com.application.mxm.soundtracks.ui.RepoOwnerDataView;
+import com.application.mxm.soundtracks.utils.Utils;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+    public static final String TRACK_PARAMS_KEY = "TRACK_PARAMS_KEY";
+    @BindView(R.id.repoOwnerDataViewId)
     RepoOwnerDataView repoOwnerDataView;
+    private Unbinder unbinder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        bindView();
+        unbinder = ButterKnife.bind(this);
         onInitView();
     }
 
-    private void bindView() {
-        repoOwnerDataView = findViewById(R.id.repoOwnerDataViewId);
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (unbinder != null)
+            unbinder.unbind();
     }
 
     /**
@@ -39,6 +49,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return;
         }
 
-        startActivity(new Intent(this, LyricActivity.class));
+        Bundle bundle = Utils.buildTrackParams("bla", "bla", "bla", "bla");
+        Intent intent = new Intent(this, TrackListActivity.class);
+        intent.putExtra(TRACK_PARAMS_KEY, bundle);
+        startActivity(intent);
     }
 }

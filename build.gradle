@@ -18,6 +18,7 @@ ext {
     junitVersion = '4.12'
     daggerVersion = '2.11'
     espressoVersion = '2.2.2'
+    butterknifeVersion = '8.8.1'
 }
 
 buildscript {
