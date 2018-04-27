@@ -15,7 +15,7 @@
         android:id="@+id/trackProgressbarId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_gravity="center"
         style="@style/Widget.AppCompat.ProgressBar"/>
     <android.support.v7.widget.RecyclerView
         android:background="@android:color/holo_orange_dark"

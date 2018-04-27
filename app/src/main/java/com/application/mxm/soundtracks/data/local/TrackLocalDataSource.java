@@ -32,7 +32,8 @@ public class TrackLocalDataSource implements TrackDataSource {
      */
     @Override
     public Observable<List<Track>> getTracks(String page, String pageSize, String country, String fHasLyrics, String apiKey) {
-        return Observable.just(map.get(Utils.getTrackParamsKey(page, pageSize, country, fHasLyrics)));
+        String paramKey = Utils.getTrackParamsKey(page, pageSize, country, fHasLyrics);
+        return Observable.just(map.get(paramKey));
     }
 
     @Override
