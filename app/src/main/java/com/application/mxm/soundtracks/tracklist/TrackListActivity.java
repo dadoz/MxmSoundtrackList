@@ -30,7 +30,8 @@ import static com.application.mxm.soundtracks.MainActivity.TRACK_PARAMS_KEY;
 /**
  * stargazer activity
  */
-public class TrackListActivity extends DaggerAppCompatActivity implements TrackContract.TrackView, TrackListAdapter.OnTrackItemClickListener, TrackListAdapter.OnTrackLoadMoreClickListener {
+public class TrackListActivity extends DaggerAppCompatActivity implements TrackContract.TrackView,
+        TrackListAdapter.OnTrackItemClickListener, TrackListAdapter.OnTrackLoadMoreClickListener {
     public static final String LYRICS_PARAMS_KEY = "LYRICS_PARAMS_KEY";
     @BindView(R.id.stargazerRecyclerViewId)
     RecyclerView recyclerView;
@@ -116,13 +117,11 @@ public class TrackListActivity extends DaggerAppCompatActivity implements TrackC
     @Override
     public void showStandardLoading() {
         progressBar.setVisibility(View.VISIBLE);
-//        Toast.makeText(this, "show loader", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void hideStandardLoading() {
         progressBar.setVisibility(View.GONE);
-//        Toast.makeText(this, "hide loader", Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -136,9 +135,9 @@ public class TrackListActivity extends DaggerAppCompatActivity implements TrackC
         recyclerView.setVisibility(View.VISIBLE);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
-        if (recyclerView.getAdapter() == null)
+        if (recyclerView.getAdapter() == null) {
             recyclerView.setAdapter(new TrackListAdapter(items, this, this));
-        else {
+        } else {
             ((TrackListAdapter) recyclerView.getAdapter()).addItems(items);
             recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount() - 2);
         }

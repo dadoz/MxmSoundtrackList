@@ -1,6 +1,8 @@
 package com.application.mxm.soundtracks.data.local;
 
 
+import android.util.Log;
+
 import com.application.mxm.soundtracks.data.TrackDataSource;
 import com.application.mxm.soundtracks.data.model.Track;
 import com.application.mxm.soundtracks.utils.Utils;
@@ -41,6 +43,7 @@ public class TrackLocalDataSource implements TrackDataSource {
 
     @Override
     public void setTracks(List stargazerList, String paramsKey) {
+        Log.i(getClass().getName(), "[PARAMS_KEY]" + paramsKey);
         //set all items as new
         map.put(paramsKey, stargazerList);
     }

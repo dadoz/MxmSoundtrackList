@@ -39,7 +39,8 @@
             android:id="@+id/repoEditTextLayoutId"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/page_size_hint"/>
+            android:hint="@string/page_size_hint"
+            android:inputType="number"/>
     </android.support.design.widget.TextInputLayout>
 
     <!--hasLyrics-->

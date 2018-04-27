@@ -69,33 +69,34 @@ public class TrackInputDataView extends RelativeLayout {
         return value;
     }
 
+    /**
+     * 
+     * @return
+     */
     public boolean hasLyricsCheckbox() {
         return hasLyricsCheckbox.isChecked();
     }
 
+    /**
+     * 
+     * @return
+     */
     public boolean isValidInputData() {
-        return !countryTextInputLayout.getEditText().getText().toString().equals("") &&
-                !pageSizeTextInputLayout.getEditText().getText().toString().equals("");
+        return !countryTextInputLayout.getEditText().getText().toString().isEmpty() &&
+                !pageSizeTextInputLayout.getEditText().getText().toString().isEmpty() &&
+                Integer.parseInt(pageSizeTextInputLayout.getEditText().getText().toString()) <= 100;
     }
 
+    /**
+     * 
+     */
     public void setErrorInputData() {
-        if (countryTextInputLayout.getEditText().getText().toString().equals(""))
+        if (countryTextInputLayout.getEditText().getText().toString().isEmpty())
             countryTextInputLayout.setError(getContext().getString(R.string.no_input_data));
 
-        if (pageSizeTextInputLayout.getEditText().getText().toString().equals(""))
+        if (pageSizeTextInputLayout.getEditText().getText().toString().isEmpty())
             pageSizeTextInputLayout.setError(getContext().getString(R.string.no_input_data));
     }
-
-//    @Override public Parcelable onSaveInstanceState() {
-//        return Icepick.saveInstanceState(this, super.onSaveInstanceState());
-//    }
-//
-//    @Override public void onRestoreInstanceState(Parcelable state) {
-//        super.onRestoreInstanceState(Icepick.restoreInstanceState(this, state));
-//        pageSizeTextInputLayout.getEditText().setText(pageSize);
-//        countryTextInputLayout.getEditText().setText(country);
-//    }
-
 
     /**
      * custom imple of text watcher
@@ -113,8 +114,7 @@ public class TrackInputDataView extends RelativeLayout {
         }
 
         @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+        public void onTextChanged(CharSequence text, int start, int before, int count) {
         }
 
         @Override
@@ -126,6 +126,11 @@ public class TrackInputDataView extends RelativeLayout {
                     break;
                 case "pageSize":
                     pageSize = pageSizeTextInputLayout.getEditText().getText().toString();
+                    if (!pageSize.isEmpty() &&
+                            Integer.parseInt(pageSize.toString()) > 100) {
+                        pageSizeTextInputLayout.setError(getContext().getString(R.string.max_default));
+                        return;
+                    }
                     pageSizeTextInputLayout.setError(null);
                     break;
             }
