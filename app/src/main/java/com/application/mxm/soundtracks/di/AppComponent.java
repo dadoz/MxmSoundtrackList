@@ -12,6 +12,7 @@ import dagger.BindsInstance;
 import dagger.Component;
 import dagger.android.AndroidInjector;
 import dagger.android.support.AndroidSupportInjectionModule;
+
 @Singleton
 @Component(modules = {
         LyricsRepositoryModule.class,
@@ -20,6 +21,7 @@ import dagger.android.support.AndroidSupportInjectionModule;
         ActivityBindingModule.class,
         AndroidSupportInjectionModule.class})
 public interface AppComponent extends AndroidInjector<SoundtrackApplication> {
+
     @Component.Builder
     interface Builder {
         @BindsInstance

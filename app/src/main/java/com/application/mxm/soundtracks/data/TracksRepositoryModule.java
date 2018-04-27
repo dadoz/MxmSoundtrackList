@@ -9,15 +9,20 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import io.realm.Realm;
 
 @Module
 public class TracksRepositoryModule {
+    @Provides
+    Realm provideRealm() {
+        return Realm.getDefaultInstance();
+    }
 
     @Provides
     @Singleton
     @Local
-    TrackDataSource provideStargazerLocalDataSource() {
-        return new TrackLocalDataSource();
+    TrackDataSource provideStargazerLocalDataSource(Realm realm) {
+        return new TrackLocalDataSource(realm);
     }
 
     @Provides
@@ -26,4 +31,5 @@ public class TracksRepositoryModule {
     TrackDataSource provideStargazerRemoteDataSource() {
         return new TrackNetworkDataSource();
     }
+
 }

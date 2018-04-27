@@ -2,10 +2,14 @@ package com.application.mxm.soundtracks.data.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Track {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
+public class Track extends RealmObject {
 
     @SerializedName("track_id")
     @Expose
+    @PrimaryKey
     private Integer trackId;
     @SerializedName("track_mbid")
     @Expose

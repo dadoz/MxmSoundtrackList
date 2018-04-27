@@ -14,7 +14,6 @@ import org.junit.Test;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.hasErrorText;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
@@ -28,26 +27,24 @@ public class RepoOwnerInputTest {
 
     }
     @Test
-    public void ownerIsEmptyEditTextTest() {
-        onView(withId(R.id.ownerEditTextLayoutId))
+    public void countryIsEmptyEditTextTest() {
+        onView(withId(R.id.countryTextInputLayoutId))
                 .check(matches(withText("")));
     }
     @Test
-    public void ownerHasErrorTextInputLayoutTest() {
-
-        onView(withId(R.id.ownerTextInputLayoutId))
+    public void countryHasErrorTextInputLayoutTest() {
+        onView(withId(R.id.countryTextInputLayoutId))
                 .check(matches(hasTextInputLayoutErrorText(mRule.getActivity().getString(R.string.no_input_data))));
     }
 
     @Test
-    public void repoIsEmptyEditTextTest() {
-
-        onView(withId(R.id.repoEditTextLayoutId))
+    public void pageSizeIsEmptyEditTextTest() {
+        onView(withId(R.id.pageSizeTextInputLayoutId))
                 .check(matches(withText("")));
     }
     @Test
-    public void repoHasErrorTextInputLayoutTest() {
-        onView(withId(R.id.repoTextInputLayoutId))
+    public void pageSizeHasErrorTextInputLayoutTest() {
+        onView(withId(R.id.pageSizeTextInputLayoutId))
                 .check(matches(hasTextInputLayoutErrorText(mRule.getActivity().getString(R.string.no_input_data))));
     }
 

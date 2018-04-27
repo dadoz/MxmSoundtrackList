@@ -4,6 +4,7 @@ import com.application.mxm.soundtracks.di.DaggerAppComponent;
 
 import dagger.android.AndroidInjector;
 import dagger.android.DaggerApplication;
+import io.realm.Realm;
 
 public class SoundtrackApplication extends DaggerApplication {
     @Override
@@ -16,6 +17,9 @@ public class SoundtrackApplication extends DaggerApplication {
      * @return
      */
     public AndroidInjector<? extends DaggerApplication> getComponent() {
+        //TODO move it
+        Realm.init(this);
+
         return DaggerAppComponent.builder()
                 .application(this)
                 .build();

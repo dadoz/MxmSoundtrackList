@@ -11,6 +11,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 
 /**
  * Created by davide-syn on 4/24/18.
@@ -43,6 +44,7 @@ public class TracksRepository {
         //show data from netwkor and added on cache if some result
         return networkDataSource
                 .getTracks(page, pageSize, country, fHasLyrics, BuildConfig.API_KEY)
+                .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext(list -> localDataSource.setTracks(list, paramsKey));
     }
 
