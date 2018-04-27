@@ -14,8 +14,8 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.realm.Realm;
-import io.realm.RealmList;
 
 /**
  * In Ram memory storage
@@ -40,31 +40,26 @@ public class TrackLocalDataSource implements TrackDataSource {
     @Override
     public Observable<List<Track>> getTracks(String page, String pageSize, String country, String fHasLyrics, String apiKey) {
         String paramKey = Utils.getTrackParamsKey(page, pageSize, country, fHasLyrics);
-        return query(paramKey)
-                .flatMap(trackMap -> Observable.fromIterable(trackMap.getTrackList()))
-                .toList().toObservable();
+        return query(paramKey).<TrackMap>asFlowable().toObservable()
+                .observeOn(AndroidSchedulers.mainThread())
+                .map(TrackMap::getTrackList);
     }
 
     @Override
     public boolean hasTracks(String paramsKey) {
-        return true;
-//        TrackMap cache = query(paramsKey);
-//        return cache != null &&
-//                cache.getTrackList() != null &&
-//                cache.getTrackList().size() != 0;
+        TrackMap cache = query(paramsKey);
+        return cache != null &&
+                cache.getTrackList() != null &&
+                cache.getTrackList().size() != 0;
     }
 
     @Override
     public void setTracks(List<Track> trackList, String paramsKey) {
         Log.i(getClass().getName(), "[PARAMS_KEY]" + paramsKey);
         realm.executeTransaction(realm1 -> {
-            //save on db
-            TrackMap trackMap = realm1.createObject(TrackMap.class, paramsKey);
-            RealmList list = new RealmList();
-            for (Track track: trackList)
-                list.add(realm1.copyToRealm(track));
-            trackMap.setTrackList(list);
-        });
+                    TrackMap trackMap = realm1.createObject(TrackMap.class, paramsKey);
+                    trackMap.getTrackList().addAll(realm1.copyToRealmOrUpdate(trackList));
+                });
     }
 
     /**
@@ -72,10 +67,8 @@ public class TrackLocalDataSource implements TrackDataSource {
      * @param paramsKey
      * @return
      */
-    private Observable<TrackMap> query(String paramsKey) {
-        return realm.where(TrackMap.class).equalTo("trackParamsKey", paramsKey)
-                .findFirstAsync().<TrackMap>asFlowable().toObservable();
+    private TrackMap query(String paramsKey) {
+        return Realm.getDefaultInstance().where(TrackMap.class).equalTo("trackParamsKey", paramsKey)
+                .findFirst();
     }
-
-
 }

@@ -37,9 +37,9 @@ public class TracksRepository {
         String paramsKey = Utils.getTrackParamsKey(page, pageSize, country, fHasLyrics);
 
         //show data from cache
-        if (localDataSource.hasTracks(paramsKey)) {
-            return localDataSource.getTracks(page, pageSize, country, fHasLyrics, BuildConfig.API_KEY);
-        }
+//        if (localDataSource.hasTracks(paramsKey)) {
+//            return localDataSource.getTracks(page, pageSize, country, fHasLyrics, BuildConfig.API_KEY);
+//        }
 
         //show data from netwkor and added on cache if some result
         return networkDataSource
