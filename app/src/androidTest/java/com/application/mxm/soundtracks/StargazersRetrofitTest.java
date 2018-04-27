@@ -57,7 +57,7 @@ public class StargazersRetrofitTest {
 
         onView(withId(R.id.emptyViewId)).check(matches(not(isDisplayed())));
         onView(withId(R.id.stargazerProgressbarId)).check(matches(not(isDisplayed())));
-        onView(withId(R.id.stargazerRecyclerViewId)).check(matches(isDisplayed()));
+        onView(withId(R.id.trackRecyclerViewId)).check(matches(isDisplayed()));
     }
 
 
@@ -72,7 +72,7 @@ public class StargazersRetrofitTest {
 
         onView(withId(R.id.emptyViewId)).check(matches(isDisplayed()));
         onView(withId(R.id.stargazerProgressbarId)).check(matches(not(isDisplayed())));
-        onView(withId(R.id.stargazerRecyclerViewId)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.trackRecyclerViewId)).check(matches(not(isDisplayed())));
     }
 
     @After

@@ -1,8 +1,13 @@
 package com.application.mxm.soundtracks.utils;
 
+import android.content.Context;
 import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.util.SparseArray;
+import android.widget.ImageView;
+
+import com.application.mxm.soundtracks.R;
+import com.bumptech.glide.Glide;
 
 import java.io.InputStream;
 
@@ -40,12 +45,17 @@ public class Utils {
 
     /**
      *
-     * @param trackId
-     * @return
+     *
+     * @param artistName
+     *@param trackName
+     * @param trackId  @return
      */
-    public static Bundle buildLyricsParams(String trackId) {
+    public static Bundle buildLyricsParams(String trackId, String artistName, String trackName, String avatarUrl) {
         Bundle bundle = new Bundle();
         bundle.putString("TRACK_ID", trackId);
+        bundle.putString("ARTIST_NAME", artistName);
+        bundle.putString("TRACK_NAME", trackName);
+        bundle.putString("AVATAR_URL", avatarUrl);
         return bundle;
     }
 
@@ -57,6 +67,9 @@ public class Utils {
     public static SparseArray<String> getLyricsParamsFromBundle(Bundle bundle) {
         SparseArray<String> array = new SparseArray<>();
         array.put(0, bundle.getString("TRACK_ID", null));
+        array.put(1, bundle.getString("ARTIST_NAME", null));
+        array.put(2, bundle.getString("TRACK_NAME", null));
+        array.put(3, bundle.getString("AVATAR_URL", null));
         return array;
     }
 
@@ -85,5 +98,22 @@ public class Utils {
 
     public static String getTrackParamsKey(String page, String pageSize, String country, String fHasLyrics) {
         return page + "_" +pageSize + "_" + country + "_" + fHasLyrics;
+    }
+
+    /**
+     *
+     * @param avatarImageView
+     * @param avatarUrl
+     */
+    public static void renderIcon(ImageView avatarImageView, String avatarUrl) {
+        if (avatarUrl == null) {
+            Glide.clear(avatarImageView);
+            return;
+        }
+
+        Glide.with(avatarImageView.getContext())
+                .load(avatarUrl)
+                .placeholder(R.mipmap.github_placeholder)
+                .into(avatarImageView);
     }
 }

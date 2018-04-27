@@ -33,7 +33,7 @@ import static com.application.mxm.soundtracks.MainActivity.TRACK_PARAMS_KEY;
 public class TrackListActivity extends DaggerAppCompatActivity implements TrackContract.TrackView,
         TrackListAdapter.OnTrackItemClickListener, TrackListAdapter.OnTrackLoadMoreClickListener {
     public static final String LYRICS_PARAMS_KEY = "LYRICS_PARAMS_KEY";
-    @BindView(R.id.stargazerRecyclerViewId)
+    @BindView(R.id.trackRecyclerViewId)
     RecyclerView recyclerView;
     @BindView(R.id.trackProgressbarId)
     ProgressBar progressBar;
@@ -145,8 +145,9 @@ public class TrackListActivity extends DaggerAppCompatActivity implements TrackC
     }
 
     @Override
-    public void onTrackItemClick(View view, Track item) {
-        Intent intent = LyricActivity.buildIntent(this, item.getTrackId());
+    public void onTrackItemClick(View view, Track track) {
+        Intent intent = LyricActivity.buildIntent(this, track.getTrackId(), track.getArtistName(),
+                track.getTrackName(), track.getAlbumCoverart100x100());
         startActivity(intent);
 
     }

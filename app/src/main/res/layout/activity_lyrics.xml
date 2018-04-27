@@ -15,10 +15,17 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         style="@style/Widget.AppCompat.ProgressBar"/>
-    <TextView
-        android:id="@+id/lyricsTextViewId"
-        android:orientation="vertical"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <include layout="@layout/track_item"/>
+        <TextView
+            android:id="@+id/lyricsTextViewId"
+            android:padding="@dimen/activity_vertical_margin"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
 </FrameLayout>
 

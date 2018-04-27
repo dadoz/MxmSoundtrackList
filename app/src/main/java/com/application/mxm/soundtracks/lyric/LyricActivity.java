@@ -4,11 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.util.SparseArray;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.application.mxm.soundtracks.R;
 import com.application.mxm.soundtracks.data.model.Lyric;
@@ -28,8 +29,15 @@ import static com.application.mxm.soundtracks.tracklist.TrackListActivity.LYRICS
  * stargazer activity
  */
 public class LyricActivity extends DaggerAppCompatActivity implements LyricContract.LyricsView {
+    @BindView(R.id.artistNameTextViewId)
+    TextView artistNameTextView;
+    @BindView(R.id.trackNameTextViewId)
+    TextView trackNameTextView;
+    @BindView(R.id.avatarImageViewId)
+    ImageView avatarImageView;
     @BindView(R.id.lyricsTextViewId)
     TextView lyricsTextView;
+
     @BindView(R.id.lyricsProgressbarId)
     ProgressBar progressBar;
     @BindView(R.id.lyricsEmptyViewId)
@@ -39,6 +47,7 @@ public class LyricActivity extends DaggerAppCompatActivity implements LyricContr
     LyricPresenter presenter;
 
     private Unbinder unbinder;
+    private SparseArray<String> params;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,8 +69,9 @@ public class LyricActivity extends DaggerAppCompatActivity implements LyricContr
      */
     private void onInitView() {
         initActionbar();
+        params = Utils.getLyricsParamsFromBundle(getIntent().getExtras().getBundle(LYRICS_PARAMS_KEY));
         presenter.bindView(this);
-        presenter.retrieveItems(Utils.getLyricsParamsFromBundle(getIntent().getExtras().getBundle(LYRICS_PARAMS_KEY)));
+        presenter.retrieveItems(params);
     }
 
     /**
@@ -94,10 +104,13 @@ public class LyricActivity extends DaggerAppCompatActivity implements LyricContr
     }
 
     @Override
-    public void onRenderData(Lyric item) {
+    public void onRenderData(Lyric lyric) {
         progressBar.setVisibility(View.GONE);
         emptyView.setVisibility(View.GONE);
-        lyricsTextView.setText(item.getLyricsBody());
+        artistNameTextView.setText(params.get(1));
+        trackNameTextView.setText(params.get(2));
+        Utils.renderIcon(avatarImageView, params.get(3));
+        lyricsTextView.setText(lyric.getLyricsBody());
     }
 
 
@@ -111,12 +124,12 @@ public class LyricActivity extends DaggerAppCompatActivity implements LyricContr
 
     @Override
     public void showStandardLoading() {
-        Toast.makeText(this, "show loader", Toast.LENGTH_SHORT).show();
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideStandardLoading() {
-        Toast.makeText(this, "hide loader", Toast.LENGTH_SHORT).show();
+        progressBar.setVisibility(View.GONE);
     }
 
     /**
@@ -125,8 +138,8 @@ public class LyricActivity extends DaggerAppCompatActivity implements LyricContr
      * @param trackId
      * @return
      */
-    public static Intent buildIntent(Context context, Integer trackId) {
-        Bundle bundle = Utils.buildLyricsParams(Integer.toString(trackId));
+    public static Intent buildIntent(Context context, Integer trackId, String artistName, String trackName, String avatarUrl) {
+        Bundle bundle = Utils.buildLyricsParams(Integer.toString(trackId), artistName, trackName, avatarUrl);
         Intent intent = new Intent(context, LyricActivity.class);
         intent.putExtra(LYRICS_PARAMS_KEY, bundle);
         return intent;

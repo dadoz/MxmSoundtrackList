@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.application.mxm.soundtracks.R;
 import com.application.mxm.soundtracks.data.model.Track;
-import com.bumptech.glide.Glide;
+import com.application.mxm.soundtracks.utils.Utils;
 
 import java.util.List;
 
@@ -49,7 +49,8 @@ public class TrackListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         if (viewHolder instanceof ViewHolder) {
             Track track = items.get(position);
             setAvatar((ViewHolder) viewHolder, track.getAlbumCoverart100x100());
-            ((ViewHolder) viewHolder).usernameTextview.setText(track.getTrackName());
+            ((ViewHolder) viewHolder).trackNameTextview.setText(track.getTrackName());
+            ((ViewHolder) viewHolder).artistNameTextview.setText(track.getArtistName());
             if (listener != null)
                 ((ViewHolder) viewHolder).itemView.setOnClickListener(view -> listener.onTrackItemClick(view, items.get(position)));
         }
@@ -70,15 +71,7 @@ public class TrackListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
      * @param avatarUrl
      */
     private void setAvatar(ViewHolder vh, String avatarUrl) {
-        if (avatarUrl == null) {
-            Glide.clear(vh.avatarImageView);
-            return;
-        }
-
-        Glide.with(vh.itemView.getContext())
-                .load(avatarUrl)
-                .placeholder(R.mipmap.github_placeholder)
-                .into(vh.avatarImageView);
+        Utils.renderIcon(vh.avatarImageView, avatarUrl);
     }
 
     /**
@@ -94,7 +87,8 @@ public class TrackListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
      * Track view holder
      */
     protected class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView usernameTextview;
+        private final TextView artistNameTextview;
+        private final TextView trackNameTextview;
         private final ImageView avatarImageView;
 
         /**
@@ -103,7 +97,8 @@ public class TrackListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
          */
         private ViewHolder(View view) {
             super(view);
-            usernameTextview =  view.findViewById(R.id.usernameTextViewId);
+            artistNameTextview =  view.findViewById(R.id.artistNameTextViewId);
+            trackNameTextview =  view.findViewById(R.id.trackNameTextViewId);
             avatarImageView =  view.findViewById(R.id.avatarImageViewId);
         }
 
@@ -123,7 +118,6 @@ public class TrackListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             view.findViewById(R.id.loadMoreTrackButtonId)
                     .setOnClickListener(v -> listener2.onTrackLoadMoreClick(v));
         }
-
 
     }
 
