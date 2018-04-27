@@ -5,12 +5,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.application.mxm.soundtracks.R;
 import com.application.mxm.soundtracks.data.model.Track;
-import com.application.mxm.soundtracks.utils.Utils;
 
 import java.util.List;
 
@@ -40,7 +38,8 @@ public class TrackListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
 
         View view = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.track_item, viewGroup, false);
+                .inflate(android.R.layout.simple_list_item_1, viewGroup, false);
+//                .inflate(R.layout.track_item, viewGroup, false);
         return new TrackListAdapter.ViewHolder(view);
     }
 
@@ -49,8 +48,9 @@ public class TrackListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         if (viewHolder instanceof ViewHolder) {
             Track track = items.get(position);
             setAvatar((ViewHolder) viewHolder, track.getAlbumCoverart100x100());
-            ((ViewHolder) viewHolder).trackNameTextview.setText(track.getTrackName());
-            ((ViewHolder) viewHolder).artistNameTextview.setText(track.getArtistName());
+//            ((ViewHolder) viewHolder).trackNameTextview.setText(track.getTrackName());
+//            ((ViewHolder) viewHolder).artistNameTextview.setText(track.getArtistName());
+            ((TextView) ((ViewHolder) viewHolder).itemView).setText(track.getArtistName());
             if (listener != null)
                 ((ViewHolder) viewHolder).itemView.setOnClickListener(view -> listener.onTrackItemClick(view, items.get(position)));
         }
@@ -71,7 +71,7 @@ public class TrackListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
      * @param avatarUrl
      */
     private void setAvatar(ViewHolder vh, String avatarUrl) {
-        Utils.renderIcon(vh.avatarImageView, avatarUrl);
+//        Utils.renderIcon(vh.avatarImageView, avatarUrl);
     }
 
     /**
@@ -79,7 +79,7 @@ public class TrackListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
      * @param items
      */
     public void addItems(List<Track> items) {
-        this.items.addAll(items);
+        this.items = items;
         notifyDataSetChanged();
     }
 
@@ -87,9 +87,9 @@ public class TrackListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
      * Track view holder
      */
     protected class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView artistNameTextview;
-        private final TextView trackNameTextview;
-        private final ImageView avatarImageView;
+//        private final TextView artistNameTextview;
+//        private final TextView trackNameTextview;
+ //       private final ImageView avatarImageView;
 
         /**
          *
@@ -97,9 +97,9 @@ public class TrackListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
          */
         private ViewHolder(View view) {
             super(view);
-            artistNameTextview =  view.findViewById(R.id.artistNameTextViewId);
-            trackNameTextview =  view.findViewById(R.id.trackNameTextViewId);
-            avatarImageView =  view.findViewById(R.id.avatarImageViewId);
+//            artistNameTextview =  view.findViewById(R.id.artistNameTextViewId);
+//            trackNameTextview =  view.findViewById(R.id.trackNameTextViewId);
+//            avatarImageView =  view.findViewById(R.id.avatarImageViewId);
         }
 
 

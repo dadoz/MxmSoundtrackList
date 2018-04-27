@@ -21,8 +21,8 @@ public class TracksRepositoryModule {
     @Provides
     @Singleton
     @Local
-    TrackDataSource provideStargazerLocalDataSource(Realm realm) {
-        return new TrackLocalDataSource(realm);
+    TrackDataSource provideStargazerLocalDataSource() {
+        return new TrackLocalDataSource();
     }
 
     @Provides

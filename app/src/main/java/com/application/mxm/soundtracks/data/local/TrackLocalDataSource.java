@@ -10,11 +10,13 @@ import com.application.mxm.soundtracks.utils.Utils;
 
 import java.util.List;
 
-import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.reactivex.Observable;
+import io.reactivex.Single;
+import io.reactivex.SingleOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import io.realm.Realm;
 
 /**
@@ -22,12 +24,6 @@ import io.realm.Realm;
  */
 @Singleton
 public class TrackLocalDataSource implements TrackDataSource {
-    private final Realm realm;
-
-    @Inject
-    public TrackLocalDataSource(Realm realm) {
-        this.realm = realm;
-    }
     /**
      *
      * @param page
@@ -40,35 +36,58 @@ public class TrackLocalDataSource implements TrackDataSource {
     @Override
     public Observable<List<Track>> getTracks(String page, String pageSize, String country, String fHasLyrics, String apiKey) {
         String paramKey = Utils.getTrackParamsKey(page, pageSize, country, fHasLyrics);
-        return query(paramKey).<TrackMap>asFlowable().toObservable()
-                .observeOn(AndroidSchedulers.mainThread())
+        return getTracks(paramKey)
                 .map(TrackMap::getTrackList);
     }
 
-    @Override
-    public boolean hasTracks(String paramsKey) {
-        TrackMap cache = query(paramsKey);
-        return cache != null &&
-                cache.getTrackList() != null &&
-                cache.getTrackList().size() != 0;
-    }
-
-    @Override
-    public void setTracks(List<Track> trackList, String paramsKey) {
-        Log.i(getClass().getName(), "[PARAMS_KEY]" + paramsKey);
-        realm.executeTransaction(realm1 -> {
-                    TrackMap trackMap = realm1.createObject(TrackMap.class, paramsKey);
-                    trackMap.getTrackList().addAll(realm1.copyToRealmOrUpdate(trackList));
-                });
-    }
-
     /**
-     * query to handle tracks items
+     * has track check
      * @param paramsKey
      * @return
      */
-    private TrackMap query(String paramsKey) {
-        return Realm.getDefaultInstance().where(TrackMap.class).equalTo("trackParamsKey", paramsKey)
-                .findFirst();
+    @Override
+    public boolean hasTracks(String paramsKey) {
+        try (Realm realm = Realm.getDefaultInstance()) {
+            TrackMap cache = realm.where(TrackMap.class).equalTo("trackParamsKey", paramsKey)
+                    .findFirst();
+            return cache != null &&
+                    cache.getTrackList() != null &&
+                    cache.getTrackList().size() != 0;
+        }
     }
+
+    /**
+     * set track on storage - realmio
+     * @param trackList
+     * @param paramsKey
+     */
+    @Override
+    public void setTracks(List<Track> trackList, String paramsKey) {
+        Log.i(getClass().getName(), "[PARAMS_KEY]" + paramsKey);
+        Single.create((SingleOnSubscribe<Void>) singleSubscriber -> {
+            try(Realm r = Realm.getDefaultInstance()) { // <-- auto-close
+                r.executeTransaction(realm -> {
+                    realm.createObject(TrackMap.class, paramsKey)
+                            .getTrackList().addAll(realm.copyToRealmOrUpdate(trackList));
+                });
+            }})
+                .subscribeOn(Schedulers.io())
+                .subscribe();
+    }
+
+    /**
+     * get tracks from storage
+     * @param paramsKey
+     * @return
+     */
+    public Observable<TrackMap> getTracks(String paramsKey) {
+            return Observable.just(Realm.getDefaultInstance())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .flatMap(realm1 -> realm1.where(TrackMap.class)
+                            .equalTo("trackParamsKey", paramsKey)
+                            .findFirst()
+                            .<TrackMap>asFlowable()
+                            .toObservable());
+    }
+
 }

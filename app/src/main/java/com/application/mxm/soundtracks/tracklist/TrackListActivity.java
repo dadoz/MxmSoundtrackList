@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -138,8 +139,9 @@ public class TrackListActivity extends DaggerAppCompatActivity implements TrackC
         if (recyclerView.getAdapter() == null) {
             recyclerView.setAdapter(new TrackListAdapter(items, this, this));
         } else {
+            Log.e(getClass().getName(), items.size() + "----");
             ((TrackListAdapter) recyclerView.getAdapter()).addItems(items);
-            recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount() - 2);
+//            recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount() - 2);
         }
 
     }

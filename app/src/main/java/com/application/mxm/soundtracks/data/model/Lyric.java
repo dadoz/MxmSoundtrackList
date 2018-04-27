@@ -4,7 +4,9 @@ package com.application.mxm.soundtracks.data.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Lyric {
+import io.realm.RealmObject;
+
+public class Lyric extends RealmObject {
 
     @SerializedName("lyrics_id")
     @Expose
@@ -36,6 +38,7 @@ public class Lyric {
     @SerializedName("updated_time")
     @Expose
     private String updatedTime;
+    private String trackId;
 
     public Integer getLyricsId() {
         return lyricsId;
@@ -117,4 +120,7 @@ public class Lyric {
         this.updatedTime = updatedTime;
     }
 
+    public void setTrackId(String trackId) {
+        this.trackId = trackId;
+    }
 }
