@@ -7,6 +7,7 @@ import com.application.mxm.soundtracks.data.TrackDataSource;
 import com.application.mxm.soundtracks.data.model.Track;
 import com.application.mxm.soundtracks.utils.Utils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -43,9 +44,15 @@ public class TrackLocalDataSource implements TrackDataSource {
     }
 
     @Override
-    public void setTracks(List stargazerList, String paramsKey) {
+    public void setTracks(List trackList, String paramsKey) {
         Log.i(getClass().getName(), "[PARAMS_KEY]" + paramsKey);
         //set all items as new
-        map.put(paramsKey, stargazerList);
+        ArrayList<Track> list = new ArrayList<>();
+        list.addAll(trackList);
+        map.put(paramsKey, list);
+
+        Log.i(getClass().getName(), map.get("1_2_it_0").size() + "------------------");
+        if (map.get("2_2_it_0") != null)
+            Log.i(getClass().getName(), map.get("2_2_it_0").size() + "------------------");
     }
 }

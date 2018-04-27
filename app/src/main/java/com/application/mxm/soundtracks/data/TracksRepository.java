@@ -1,7 +1,5 @@
 package com.application.mxm.soundtracks.data;
 
-import android.util.Log;
-
 import com.application.mxm.soundtracks.BuildConfig;
 import com.application.mxm.soundtracks.data.local.Local;
 import com.application.mxm.soundtracks.data.model.Track;
@@ -45,7 +43,6 @@ public class TracksRepository {
         //show data from netwkor and added on cache if some result
         return networkDataSource
                 .getTracks(page, pageSize, country, fHasLyrics, BuildConfig.API_KEY)
-                .doOnNext(list -> Log.i(getClass().getName(), list.size() + "------------"))
                 .doOnNext(list -> localDataSource.setTracks(list, paramsKey));
     }
 
