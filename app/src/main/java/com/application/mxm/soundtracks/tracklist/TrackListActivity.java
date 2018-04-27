@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.application.mxm.soundtracks.R;
 import com.application.mxm.soundtracks.data.model.Track;
@@ -35,7 +34,7 @@ public class TrackListActivity extends DaggerAppCompatActivity implements TrackC
     public static final String LYRICS_PARAMS_KEY = "LYRICS_PARAMS_KEY";
     @BindView(R.id.stargazerRecyclerViewId)
     RecyclerView recyclerView;
-    @BindView(R.id.stargazerProgressbarId)
+    @BindView(R.id.trackProgressbarId)
     ProgressBar progressBar;
     @BindView(R.id.emptyViewId)
     EmptyView emptyView;
@@ -116,12 +115,14 @@ public class TrackListActivity extends DaggerAppCompatActivity implements TrackC
 
     @Override
     public void showStandardLoading() {
-        Toast.makeText(this, "show loader", Toast.LENGTH_SHORT).show();
+        progressBar.setVisibility(View.VISIBLE);
+//        Toast.makeText(this, "show loader", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void hideStandardLoading() {
-        Toast.makeText(this, "hide loader", Toast.LENGTH_SHORT).show();
+        progressBar.setVisibility(View.GONE);
+//        Toast.makeText(this, "hide loader", Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -137,8 +138,11 @@ public class TrackListActivity extends DaggerAppCompatActivity implements TrackC
         recyclerView.setLayoutManager(layoutManager);
         if (recyclerView.getAdapter() == null)
             recyclerView.setAdapter(new TrackListAdapter(items, this, this));
-        else
+        else {
             ((TrackListAdapter) recyclerView.getAdapter()).addItems(items);
+            recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount() - 2);
+        }
+
     }
 
     @Override

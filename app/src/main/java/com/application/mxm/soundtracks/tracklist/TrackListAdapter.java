@@ -47,9 +47,9 @@ public class TrackListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
         if (viewHolder instanceof ViewHolder) {
-            Track stargazer = items.get(position);
-//        setAvatar(vh, stargazer.getAvatarUrl());
-            ((ViewHolder) viewHolder).usernameTextview.setText(stargazer.getTrackName());
+            Track track = items.get(position);
+            setAvatar((ViewHolder) viewHolder, track.getAlbumCoverart100x100());
+            ((ViewHolder) viewHolder).usernameTextview.setText(track.getTrackName());
             if (listener != null)
                 ((ViewHolder) viewHolder).itemView.setOnClickListener(view -> listener.onTrackItemClick(view, items.get(position)));
         }
