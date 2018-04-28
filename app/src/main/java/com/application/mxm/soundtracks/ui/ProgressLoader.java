@@ -9,7 +9,7 @@ public class ProgressLoader {
     public Action show;
     public Action hide;
 
-    ProgressLoader(Action show, Action hide) {
+    public ProgressLoader(Action show, Action hide) {
         this.show = show;
         this.hide = hide;
     }

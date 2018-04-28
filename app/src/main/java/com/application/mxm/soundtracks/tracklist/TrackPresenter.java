@@ -24,7 +24,7 @@ public class TrackPresenter implements TrackContract.TrackPresenterInterface {
     private final TracksRepository repository;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
     protected ProgressLoader loader;
-    private SparseArray<Object> params = null;
+    private SparseArray<Object> params;
 
     @Inject
     TrackPresenter(TracksRepository repository) {
@@ -63,7 +63,7 @@ public class TrackPresenter implements TrackContract.TrackPresenterInterface {
      * 1 -> pageSize
      * 2 -> country
      * 3 -> hasLyrics
-     * 
+     *
      * retrieve item obs
      * @param params
      */
@@ -81,18 +81,23 @@ public class TrackPresenter implements TrackContract.TrackPresenterInterface {
                 .compose(composeLoaderTransformer(loader))
                 .doOnError(Throwable::printStackTrace)
                 .subscribe(
-                        items -> trackView.get().onRenderData(items),
-                        error -> trackView.get().onError(error.getMessage())));
+                        items -> {
+                            trackView.get().onRenderData(items);
+                        },
+                        error -> {
+                            trackView.get().onError(error.getMessage());
+                        }));
     }
 
 
     /**
+     * TODO mv to BASE
      * compose loader transformer
      * @param loader
      * @param <T>
      * @return
      */
-    private <T extends List>ObservableTransformer<T, T> composeLoaderTransformer(ProgressLoader loader) {
+    <T extends List>ObservableTransformer<T, T> composeLoaderTransformer(ProgressLoader loader) {
         return upstream -> upstream
                 .doOnSubscribe(disposable -> loader.show.run())
                 .doOnError(error -> loader.hide.run())
@@ -101,15 +106,6 @@ public class TrackPresenter implements TrackContract.TrackPresenterInterface {
 
     /**
      *
-     */
-    public void retrieveMoreItems() {
-        setMorePagedParams();
-        //set value
-        retrieveItems(params);
-    }
-
-    /**
-     * get params
      * @return
      */
     public SparseArray<Object> getParams() {
@@ -117,29 +113,39 @@ public class TrackPresenter implements TrackContract.TrackPresenterInterface {
     }
 
     /**
-     * get all paged params (from 1 to last page)
+     *
+     * @return
      */
-    public void setMorePagedParams() {
-        Integer[] pages = (Integer[]) params.get(0);
-        Integer[] morePages = new Integer[1];
-        morePages[0] = pages[pages.length -1] + 1;
-        params.setValueAt(0, morePages);
+    public SparseArray<Object> getMoreTracksParams() {
+        int[] pages = (int[]) params.get(0);
+        params.setValueAt(0, new int[] {pages[pages.length -1] + 1});
+        return params;
     }
 
     /**
-     * get all paged params (from 1 to last page)
+     *
      * @return
      */
     public SparseArray<Object> getAllPagedParams() {
-        Integer[] pages = (Integer[]) params.get(0);
-        Integer lastPage = pages[pages.length - 1];
-        Integer[] allPages = new Integer[lastPage];
-        for (int i = 0; i < allPages.length; i ++) {
-            allPages[i] = i + 1;
+        int[] pages = (int[]) params.get(0);
+        int[] allPages = new int[pages.length];
+        for (int i = 0; i < allPages.length -1; i++) {
+            allPages[i] = i +1;
         }
-
-        params.setValueAt(0 , allPages);
+        
+        params.setValueAt(0, allPages);
         return params;
     }
+
+    /**
+     *
+     */
+    public void retrieveMoreItems() {
+        //set new pages
+        getMoreTracksParams();
+        //retrieve items
+        retrieveItems(params);
+    }
+
 
 }
