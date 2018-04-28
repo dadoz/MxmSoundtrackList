@@ -36,8 +36,8 @@ public class TrackLocalDataSource implements TrackDataSource {
     @Override
     public Observable<List<Track>> getTracks(String page, String pageSize, String country, String fHasLyrics, String apiKey) {
         String paramKey = Utils.getTrackParamsKey(page, pageSize, country, fHasLyrics);
-        return getTracks(paramKey)
-                .map(TrackMap::getTrackList);
+        return getTrackMap(paramKey)
+                .flatMap(trackMap -> Observable.just(trackMap.getTrackList()));
     }
 
     /**
@@ -80,14 +80,14 @@ public class TrackLocalDataSource implements TrackDataSource {
      * @param paramsKey
      * @return
      */
-    public Observable<TrackMap> getTracks(String paramsKey) {
-            return Observable.just(Realm.getDefaultInstance())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .flatMap(realm1 -> realm1.where(TrackMap.class)
-                            .equalTo("trackParamsKey", paramsKey)
-                            .findFirst()
-                            .<TrackMap>asFlowable()
-                            .toObservable());
+    public Observable<TrackMap> getTrackMap(String paramsKey) {
+        return Observable.just(Realm.getDefaultInstance())
+                .observeOn(AndroidSchedulers.mainThread())
+                .flatMap(realm1 -> realm1.where(TrackMap.class)
+                        .equalTo("trackParamsKey", paramsKey)
+                        .findFirst()
+                        .<TrackMap>asFlowable()
+                        .toObservable());
     }
 
 }
