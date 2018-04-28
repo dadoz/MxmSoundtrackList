@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.util.SparseArray;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -68,7 +68,17 @@ public class TrackListActivity extends DaggerAppCompatActivity implements TrackC
     private void onInitView() {
         initActionbar();
         presenter.bindView(this);
-        presenter.retrieveItems(Utils.getTrackParamsFromBundle(getIntent().getExtras().getBundle(TRACK_PARAMS_KEY)));
+        presenter.retrieveItems(buildParams());
+    }
+
+    /**
+     *
+     * @return
+     */
+    private SparseArray<Object> buildParams() {
+        return presenter.getParams() == null ?
+                Utils.getTrackParamsFromBundle(getIntent().getExtras().getBundle(TRACK_PARAMS_KEY)) :
+                presenter.getAllPagedParams();
     }
 
     /**
@@ -139,9 +149,8 @@ public class TrackListActivity extends DaggerAppCompatActivity implements TrackC
         if (recyclerView.getAdapter() == null) {
             recyclerView.setAdapter(new TrackListAdapter(items, this, this));
         } else {
-            Log.e(getClass().getName(), items.size() + "----");
             ((TrackListAdapter) recyclerView.getAdapter()).addItems(items);
-//            recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount() - 2);
+            recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount());
         }
 
     }

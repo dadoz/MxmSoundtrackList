@@ -1,6 +1,5 @@
 package com.application.mxm.soundtracks.utils;
 
-import android.content.Context;
 import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.util.SparseArray;
@@ -34,9 +33,9 @@ public class Utils {
      * @param bundle
      * @return
      */
-    public static SparseArray<String> getTrackParamsFromBundle(Bundle bundle) {
-        SparseArray<String> array = new SparseArray<>();
-        array.put(0, bundle.getString("PAGE", null));
+    public static SparseArray<Object> getTrackParamsFromBundle(Bundle bundle) {
+        SparseArray<Object> array = new SparseArray<>();
+        array.put(0, new Integer[] { Integer.parseInt(bundle.getString("PAGE", "1")) });
         array.put(1, bundle.getString("PAGE_SIZE", null));
         array.put(2, bundle.getString("COUNTRY", null));
         array.put(3, bundle.getString("FHASLYRICS", null));

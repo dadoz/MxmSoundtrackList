@@ -13,6 +13,7 @@ import java.util.List;
 import javax.inject.Singleton;
 
 import io.reactivex.Observable;
+import io.reactivex.ObservableTransformer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.realm.Realm;
 
@@ -23,7 +24,7 @@ import io.realm.Realm;
 public class TrackLocalDataSource implements TrackDataSource {
     /**
      *
-     * @param page
+     * @param pages
      * @param pageSize
      * @param country
      * @param fHasLyrics
@@ -31,15 +32,9 @@ public class TrackLocalDataSource implements TrackDataSource {
      * @return
      */
     @Override
-    public Observable<List<Track>> getTracks(String page, String pageSize, String country, String fHasLyrics, String apiKey) {
-        String paramKey = Utils.getTrackParamsKey(page, pageSize, country, fHasLyrics);
-        return getTrackMap(paramKey)
-                .map(trackMap -> {
-                    try(Realm realm = Realm.getDefaultInstance()) {
-                        //detach from realm -> since there's a problem with adding item in same list
-                        return realm.copyFromRealm(trackMap.getTrackList());
-                    }
-                });
+    public Observable<List<Track>> getTracks(Integer[] pages, String pageSize, String country, String fHasLyrics, String apiKey) {
+        return Observable.range(pages[0], pages.length)// Integer.parseInt(page) == 1 ? Integer.parseInt(page) : Integer.parseInt(page) - 1) //counting from 1 to last page
+                .compose(getPagedTracksTransformer(pageSize, country, fHasLyrics));
     }
 
     /**
@@ -50,8 +45,7 @@ public class TrackLocalDataSource implements TrackDataSource {
     @Override
     public boolean hasTracks(String paramsKey) {
         try (Realm realm = Realm.getDefaultInstance()) {
-            TrackMap cache = realm.where(TrackMap.class).equalTo("trackParamsKey", paramsKey)
-                    .findFirst();
+            TrackMap cache = queryTrackMap(realm, paramsKey);
             return cache != null &&
                     cache.getTrackList() != null &&
                     cache.getTrackList().size() != 0;
@@ -64,9 +58,9 @@ public class TrackLocalDataSource implements TrackDataSource {
      * @param paramsKey
      */
     @Override
-    public void setTracks(List<Track> trackList, String paramsKey, String paramsKeyPrev) {
+    public void setTracks(List<Track> trackList, String paramsKey) {
         Log.i(getClass().getName(), "[PARAMS_KEY]" + paramsKey);
-        try(Realm r = Realm.getDefaultInstance()) {
+        try (Realm r = Realm.getDefaultInstance()) {
             r.executeTransaction(realm -> {
                 //create track map
                 TrackMap trackMap = realm.createObject(TrackMap.class, paramsKey);
@@ -84,11 +78,42 @@ public class TrackLocalDataSource implements TrackDataSource {
     public Observable<TrackMap> getTrackMap(String paramsKey) {
         return Observable.just(Realm.getDefaultInstance())
                 .observeOn(AndroidSchedulers.mainThread())
-                .flatMap(realm1 -> realm1.where(TrackMap.class)
-                        .equalTo("trackParamsKey", paramsKey)
-                        .findFirst()
+                .flatMap(realm -> queryTrackMap(realm, paramsKey)
                         .<TrackMap>asFlowable()
                         .toObservable());
     }
 
+    /**
+     * query trackMap
+     * @param realm
+     * @param paramsKey
+     * @return
+     */
+    private TrackMap queryTrackMap(Realm realm, String paramsKey) {
+        return realm.where(TrackMap.class)
+                .equalTo("trackParamsKey", paramsKey)
+                .findFirst();
+    }
+
+    /**
+     * get paged tracks transformer
+     * @param pageSize
+     * @param country
+     * @param fHasLyrics
+     * @return
+     */
+    public ObservableTransformer<Integer, List<Track>> getPagedTracksTransformer(String pageSize,
+                                                                                 String country, String fHasLyrics) {
+        return obs -> obs
+                .doOnNext(currentPage -> Log.e(getClass().getName(), "------- " + currentPage))
+                .flatMap(currentPage -> Observable.just(Utils.getTrackParamsKey(Integer.toString(currentPage), pageSize, country, fHasLyrics))
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .flatMap(params -> getTrackMap(params)
+                                .map(trackMap -> {
+                                    try (Realm realm = Realm.getDefaultInstance()) {
+                                        //detach from realm -> since there's a problem with adding item in same list
+                                        return realm.copyFromRealm(trackMap.getTrackList());
+                                    }
+                                })));
+    }
 }
