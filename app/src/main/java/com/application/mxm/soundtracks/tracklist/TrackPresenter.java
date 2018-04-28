@@ -117,8 +117,8 @@ public class TrackPresenter implements TrackContract.TrackPresenterInterface {
      * @return
      */
     public SparseArray<Object> getMoreTracksParams() {
-        int[] pages = (int[]) params.get(0);
-        params.setValueAt(0, new int[] {pages[pages.length -1] + 1});
+        Integer[] pages = (Integer[]) params.get(0);
+        params.setValueAt(0, new Integer[] {pages[pages.length -1] + 1});
         return params;
     }
 
@@ -127,12 +127,12 @@ public class TrackPresenter implements TrackContract.TrackPresenterInterface {
      * @return
      */
     public SparseArray<Object> getAllPagedParams() {
-        int[] pages = (int[]) params.get(0);
-        int[] allPages = new int[pages.length];
-        for (int i = 0; i < allPages.length -1; i++) {
+        Integer[] pages = (Integer[]) params.get(0);
+        Integer[] allPages = new Integer[pages[pages.length -1]];
+        for (int i = 0; i < allPages.length; i++) {
             allPages[i] = i +1;
         }
-        
+
         params.setValueAt(0, allPages);
         return params;
     }
