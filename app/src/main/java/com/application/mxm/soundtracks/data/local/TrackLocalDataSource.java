@@ -13,10 +13,7 @@ import java.util.List;
 import javax.inject.Singleton;
 
 import io.reactivex.Observable;
-import io.reactivex.Single;
-import io.reactivex.SingleOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 import io.realm.Realm;
 
 /**
@@ -37,7 +34,12 @@ public class TrackLocalDataSource implements TrackDataSource {
     public Observable<List<Track>> getTracks(String page, String pageSize, String country, String fHasLyrics, String apiKey) {
         String paramKey = Utils.getTrackParamsKey(page, pageSize, country, fHasLyrics);
         return getTrackMap(paramKey)
-                .flatMap(trackMap -> Observable.just(trackMap.getTrackList()));
+                .map(trackMap -> {
+                    try(Realm realm = Realm.getDefaultInstance()) {
+                        //detach from realm -> since there's a problem with adding item in same list
+                        return realm.copyFromRealm(trackMap.getTrackList());
+                    }
+                });
     }
 
     /**
@@ -62,17 +64,16 @@ public class TrackLocalDataSource implements TrackDataSource {
      * @param paramsKey
      */
     @Override
-    public void setTracks(List<Track> trackList, String paramsKey) {
+    public void setTracks(List<Track> trackList, String paramsKey, String paramsKeyPrev) {
         Log.i(getClass().getName(), "[PARAMS_KEY]" + paramsKey);
-        Single.create((SingleOnSubscribe<Void>) singleSubscriber -> {
-            try(Realm r = Realm.getDefaultInstance()) { // <-- auto-close
-                r.executeTransaction(realm -> {
-                    realm.createObject(TrackMap.class, paramsKey)
-                            .getTrackList().addAll(realm.copyToRealmOrUpdate(trackList));
-                });
-            }})
-                .subscribeOn(Schedulers.io())
-                .subscribe();
+        try(Realm r = Realm.getDefaultInstance()) {
+            r.executeTransaction(realm -> {
+                //create track map
+                TrackMap trackMap = realm.createObject(TrackMap.class, paramsKey);
+                //adding new items
+                trackMap.getTrackList().addAll(realm.copyToRealmOrUpdate(trackList));
+            });
+        }
     }
 
     /**

@@ -33,9 +33,10 @@ public class TrackNetworkDataSource extends RetrofitDataSourceBase implements Tr
 
     /**
      * @param stargazers
+     * @param key
      */
     @Override
-    public void setTracks(List<Track> stargazers, String paramsKey) {
+    public void setTracks(List<Track> stargazers, String key, String paramsKey) {
     }
 
     @Override
