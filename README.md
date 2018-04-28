@@ -1,5 +1,5 @@
-# GithubStargazers
-Android application to handle all stargazer that are following you.
+# MxmSoundtrackList
+Android application to handle all Tracks from MXM api.
 
 # Clone this repo
 First of all clone this repo typing `git clone <github-project-url>`
@@ -17,15 +17,27 @@ On Android Studio select:
 - Import Project from Gradle
 
 # Java and Android Version support
+This project is using Java 8 code with lambda expressions
+
+Project SDK support: 
+
+- Android 8.0 (API 27)
+- minSdkVersion = 19
+- targetSdkVersion = 27
+# Java and Android Version support
 This project is using Java 8 code with lambda expressions, method references and try-with-resources statements, but support as well java 7, thanks to Retrolambda open source library [Retrolambda Github](https://github.com/orfjackal/retrolambda)
 
-Project min SDK support: 
+# Third Part libraries
 
-- Android 5.0 (Android Lollipop)
+- **retrofit** (API handler)
+- **okhttp** (API handler)
+- **gson** (API handler)
+- **rxjava2** (Network requests manager)
+- **glide** (Image loader)
+- **dagger2** (Dependencies Injection)
+- **butterknife** (Views injection)
 
-# Testing with Espresso
-I used Espresso [Espresso doc](https://google.github.io/android-testing-support-library/docs/index.html) as support library to manage project test suites
-
+# Application details
 The application under test is located in src/main/java
 Tests are in src/androidTest/java
 

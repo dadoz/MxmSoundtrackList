@@ -60,8 +60,6 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:$rootProject.glideVersion"
     //gson converter
     implementation "com.google.code.gson:gson:$rootProject.gsonVersion"
-    //mock server
-    implementation "com.squareup.okhttp3:mockwebserver:$rootProject.mockwebserverVersion"
     // Dagger dependencies
     annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
     compileOnly "org.glassfish:javax.annotation:$rootProject.glassfishannotationVersion"
