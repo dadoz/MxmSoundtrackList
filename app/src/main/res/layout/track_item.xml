@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/margin_16"
-            android:text="username"
+            tools:text="username"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/font_18"/>
         <TextView
@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/margin_16"
-            android:text="username"
+            tools:text="username"
             android:textSize="@dimen/font_12"/>
 
     </LinearLayout>
