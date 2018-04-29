@@ -24,7 +24,6 @@ public class TrackPresenter implements TrackContract.TrackPresenterInterface {
     private final TracksRepository repository;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
     protected ProgressLoader loader;
-    private SparseArray<Object> params;
 
     @Inject
     TrackPresenter(TracksRepository repository) {
@@ -71,7 +70,7 @@ public class TrackPresenter implements TrackContract.TrackPresenterInterface {
     public void retrieveItems(SparseArray<Object> params) {
         Log.e(TAG, params.toString());
         //set params
-        this.params = params;
+//        this.params = params;
 
         //build obs
         compositeDisposable.add(repository
@@ -108,15 +107,15 @@ public class TrackPresenter implements TrackContract.TrackPresenterInterface {
      *
      * @return
      */
-    public SparseArray<Object> getParams() {
-        return params;
-    }
+//    public SparseArray<Object> getParams() {
+//        return params;
+//    }
 
     /**
      *
      * @return
      */
-    public SparseArray<Object> getMoreTracksParams() {
+    public SparseArray<Object> getMoreTracksParams(SparseArray<Object> params) {
         Integer[] pages = (Integer[]) params.get(0);
         params.setValueAt(0, new Integer[] {pages[pages.length -1] + 1});
         return params;
@@ -126,7 +125,7 @@ public class TrackPresenter implements TrackContract.TrackPresenterInterface {
      *
      * @return
      */
-    public SparseArray<Object> getAllPagedParams() {
+    public SparseArray<Object> getAllPagedParams(SparseArray<Object> params) {
         Integer[] pages = (Integer[]) params.get(0);
         Integer[] allPages = new Integer[pages[pages.length -1]];
         for (int i = 0; i < allPages.length; i++) {
@@ -140,9 +139,9 @@ public class TrackPresenter implements TrackContract.TrackPresenterInterface {
     /**
      *
      */
-    public void retrieveMoreItems() {
+    public void retrieveMoreItems(SparseArray<Object> params) {
         //set new pages
-        getMoreTracksParams();
+        params = getMoreTracksParams(params);
         //retrieve items
         retrieveItems(params);
     }

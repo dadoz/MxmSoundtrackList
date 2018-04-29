@@ -34,26 +34,34 @@ import static com.application.mxm.soundtracks.MainActivity.TRACK_PARAMS_KEY;
 public class TrackListActivity extends DaggerAppCompatActivity implements TrackContract.TrackView,
         TrackListAdapter.OnTrackItemClickListener, TrackListAdapter.OnTrackLoadMoreClickListener {
     public static final String LYRICS_PARAMS_KEY = "LYRICS_PARAMS_KEY";
+    private static final String TRACK_PARAMS_BUNDLE = "TRACK_PARAMS_BUNDLE";
     @BindView(R.id.trackRecyclerViewId)
     RecyclerView recyclerView;
     @BindView(R.id.trackProgressbarId)
     ProgressBar progressBar;
     @BindView(R.id.emptyViewId)
     EmptyView emptyView;
-
     @Inject
     TrackPresenter presenter;
 
     private Unbinder unbinder;
+    //PAGE | PAGE_SIZE | COUNTRY | HAS_LYRICS
+    private SparseArray<Object> params;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_track_list);
         unbinder = ButterKnife.bind(this);
+        setParams(savedInstanceState);
         onInitView();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+    }
 
     @Override
     protected void onDestroy() {
@@ -68,17 +76,27 @@ public class TrackListActivity extends DaggerAppCompatActivity implements TrackC
     private void onInitView() {
         initActionbar();
         presenter.bindView(this);
-        presenter.retrieveItems(buildParams());
+        presenter.retrieveItems(params);
     }
 
     /**
      *
      * @return
+     * @param savedInstanceState
      */
-    private SparseArray<Object> buildParams() {
-        return presenter.getParams() == null ?
-                Utils.getTrackParamsFromBundle(getIntent().getExtras().getBundle(TRACK_PARAMS_KEY)) :
-                presenter.getAllPagedParams();
+    private void setParams(Bundle savedInstanceState) {
+        //get params from savedInstance
+        if (savedInstanceState != null) {
+            Bundle bundle = savedInstanceState.getBundle(TRACK_PARAMS_BUNDLE);
+
+            params = Utils.getTrackParamsFromBundle(bundle);
+
+            params = presenter.getAllPagedParams(params);
+            return;
+        }
+
+        //get params from intent
+        params = Utils.getTrackParamsFromBundle(getIntent().getExtras().getBundle(TRACK_PARAMS_KEY));
     }
 
     /**
@@ -181,6 +199,16 @@ public class TrackListActivity extends DaggerAppCompatActivity implements TrackC
 
     @Override
     public void onTrackLoadMoreClick(View view) {
-        presenter.retrieveMoreItems();
+        presenter.retrieveMoreItems(params);
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        String lastPage = Integer.toString((((Integer[]) params.get(0))[0]));
+        Bundle bundle = Utils.buildTrackParams((String) params.get(2), (String) params.get(1),
+                (String) params.get(3), lastPage);
+        savedInstanceState.putBundle(TRACK_PARAMS_BUNDLE, bundle);
+    }
+
 }
